@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.file.FileDao">
+ <select id="getAllFile" resultType="FileEntity">
+     select f.serial,f.userNo,f.mediaNo,f.mediaName,f.createTime,f.link,f.fileName,f.fileState,f.loginTime,f.remark,f.filePath,u.contacts,e.empNo,e.empName
+        from file f
+        left join userinfo u on f.userNo= u.userNo
+		left join emp e on e.empNo=u.empNo
+     where 1=1
+     <if test="empNo !=null and empNo !='admin' and empNo.trim() !=''">
+         and  e.empNo=#{empNo,jdbcType=VARCHAR}
+     </if>
+     order by f.createTime desc
+     <if test="offset !=null and limit !=null">
+         limit #{offset},#{limit}
+     </if>
+
+ </select>
+
+    <select id="checkFile" resultType="FileEntity">
+        select f.serial,f.userNo,f.mediaNo,f.mediaName,f.createTime,f.link,f.fileName,f.fileState,f.loginTime,f.remark,f.filePath,u.contacts,e.empNo,e.empName
+        from file f
+        left join userinfo u on f.userNo= u.userNo
+        left join emp e on e.empNo=u.empNo
+        where 1=1
+        <if test="empNo !=null and empNo !='admin' and empNo.trim() !=''">
+            and  e.empNo=#{empNo,jdbcType=VARCHAR}
+        </if>
+        <if test="userNo !=null and userNo.trim() !=''">
+           and u.userNo=#{userNo,jdbcType=VARCHAR}
+        </if>
+        <if test="FirstCreateTime != null  and LastCreateTime != null and LastCreateTime.trim() != ''">
+            and f.createTime between #{FirstCreateTime} and #{LastCreateTime}
+        </if>
+        <if test="FirstCreateTime != null and FirstCreateTime.trim() != '' and (LastCreateTime == null or LastCreateTime.trim() == '')">
+            and f.createTime between #{FirstCreateTime} and now()
+        </if>
+        <if test="fileState !=null and fileState.trim() !=''">
+            and f.fileState=#{fileState,jdbcType=VARCHAR}
+        </if>
+        order by f.createTime desc
+        <if test="offset !=null and limit !=null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.emp.EmpDao">
+    <select id="getAllEmp" resultType="EmpEntity">
+        select a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,b.teamNo,b.leaderName
+        from emp a left join team b on a.serial=b.serial
+        where 1=1
+        order by a.createTime desc
+        <if test="offset !=null and limit !=null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+    <insert id="insertEmp" parameterType="EmpEntity">
+        insert into emp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="empNo !=null">
+                empNo,
+            </if>
+            <if test="empName !=null">
+                empName,
+            </if>
+            <if test="empPassword !=null">
+                empPassword,
+            </if>
+            <if test="loginTime !=null">
+                loginTime,
+            </if>
+            <if test="loginIP !=null">
+                loginIP,
+            </if>
+            <if test="teamNo !=null">
+                teamNo,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="empNo !=null">
+                #{empNo,jdbcType=VARCHAR},
+            </if>
+            <if test="empName !=null">
+                #{empName,jdbcType=VARCHAR},
+            </if>
+            <if test="empPassword !=null">
+                #{empPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTime !=null">
+                #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginIP !=null">
+                #{loginIP,jdbcType=VARCHAR},
+            </if>
+            <if test="teamNo !=null">
+                #{teamNo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateEmp" parameterType="EmpEntity">
+        update emp
+        <set>
+            <if test="empName != null">
+                empName=#{empName,jdbcType=VARCHAR},
+            </if>
+            <if test="empPassword != null">
+                empPassword=#{empPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTime != null">
+                loginTime=#{loginTime,jdbcType=TIMESTAMP },
+            </if>
+            <if test="loginIP != null">
+                loginIP=#{loginIP,jdbcType=VARCHAR },
+            </if>
+            <if test="teamNo !=null">
+                teamNo=#{teamNo,JdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where empNo=#{empNo,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteEmp" parameterType="java.util.List">
+        delete from emp where serial in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findEmp" resultType="EmpEntity">
+        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo from emp where empNo=#{empNo,jdbcType=VARCHAR} and empPassword=#{empPassword,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findEmpByEmpNo" resultType="EmpEntity">
+        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo from emp where empNo=#{empNo,jdbcType=VARCHAR}
+    </select>
+
+
+    <insert id="insertTeam" parameterType="Team">
+        insert into team
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teamNo !=null">
+                teamNo,
+            </if>
+
+            <if test="teamName !=null">
+                teamName,
+            </if>
+            <if test="leaderName !=null">
+                leaderName,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teamNo !=null">
+                #{teamNo,jdbcType=VARCHAR},
+            </if>
+            <if test="teamName !=null">
+                #{teamName,jdbcType=VARCHAR},
+            </if>
+            <if test="leaderName !=null">
+                #{leaderName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateTeam" parameterType="Team" >
+        update team
+        <set>
+            <if test="teamName !=null">
+                #{teamName,jdbcType=VARCHAR},
+            </if>
+            <if test="leaderName !=null">
+                #{leaderName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where  teamNo=#{teamNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectEmpByleaderName" parameterType="String" resultType="EmpEntity">
+    select distinct a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.loginIP,b.teamNo,b.teamName,b.leaderName from emp a inner join team b  on a.teamNo=b.teamNo
+    where 1=1
+        <!--<if test="leaderName != null and leaderName.trim() != ''">
+            and b.leaderName=#{leaderName,jdbcType=VARCHAR}
+        </if>
+        <if test="empNo != null and empNo.trim() != ''">
+            and a.empNo=#{empNo,jdbcType=VARCHAR}
+        </if>-->
+      and b.teamNo > 0
+      order by a.createTime desc
+    </select>
+</mapper>

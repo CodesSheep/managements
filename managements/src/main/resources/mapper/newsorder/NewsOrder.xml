@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.newsorder.NewsOrderDao">
+    <select id="getAllNewsOrder" resultType="NewsOrder">
+        select n.mediaNo,n.mediaName,n.createTime,n.grossPrice,n.state,n.fileState,u.userNo,u.contacts,e.empName from newsorders n
+        left join userinfo u  on n.userNo=u.userNo
+        left join emp e on e.empNo = u.empNo
+        where 1=1
+        <if test="empNo !=null and empNo !='admin' and empNo.trim() !=''">
+          and  e.empNo=#{empNo,jdbcType=VARCHAR}
+        </if>
+        order by n.createTime desc
+        <if test="offset !=null and limit !=null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+
+
+    <select id="checkNewsOrder" resultType="NewsOrder">
+        select n.mediaNo,n.mediaName,n.createTime,n.grossPrice,n.state,n.fileState,u.userNo,u.contacts,e.empName from newsorders n
+        left join userinfo u  on n.userNo=u.userNo
+        left join emp e on e.empNo = u.empNo
+        where 1=1
+        <if test="empNo !=null and empNo !='admin' and empNo.trim() !=''">
+            and  e.empNo=#{empNo,jdbcType=VARCHAR}
+        </if>
+        <if test="userNo !=null and userNo.trim() !=''">
+            and u.userNo=#{userNo,jdbcType=VARCHAR}
+        </if>
+        <if test="mediaName !=null and mediaName.trim() !=''">
+            and n.mediaName=#{mediaName,jdbcType=VARCHAR}
+        </if>
+        <if test="FirstCreateTime != null  and LastCreateTime != null and LastCreateTime.trim() != ''">
+            and n.createTime between #{FirstCreateTime} and #{LastCreateTime}
+        </if>
+        <if test="FirstCreateTime != null and FirstCreateTime.trim() != '' and (LastCreateTime == null or LastCreateTime.trim() == '')">
+            and n.createTime between #{FirstCreateTime} and now()
+        </if>
+        <if test="state !=null and state.trim() !=''">
+            and n.state=#{state,jdbcType=VARCHAR}
+        </if>
+        order by n.createTime desc
+        <if test="offset !=null and limit !=null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+</mapper>
