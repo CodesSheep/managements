@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.mediaPrice.IntegratedPortalDao">
+
+    <select id="listIntegratedPortal" resultType="IntegratedPortal">
+        SELECT serial,integratedPortalNo,integratedPortalName,createTime,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime
+        FROM integratedPortal ORDER BY integratedPortalName
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="insertIntegratedPortal" parameterType="IntegratedPortal">
+        INSERT INTO integratedPortal
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="integratedPortalNo != null" >
+                integratedPortalNo,
+            </if>
+            <if test="integratedPortalName != null" >
+                integratedPortalName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="integratedPortalNo != null" >
+                #{integratedPortalNo,jdbcType=VARCHAR},
+            </if>
+            <if test="integratedPortalName != null" >
+                #{integratedPortalName,jdbcType=NVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteIntegratedPortal" parameterType="java.util.List">
+        DELETE FROM integratedPortal WHERE integratedPortalNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

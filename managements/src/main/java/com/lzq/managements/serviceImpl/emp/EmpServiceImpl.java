@@ -60,4 +60,9 @@ public class EmpServiceImpl implements EmpService {
     public List<EmpEntity> selectEmpByleaderName(String leaderName,String empNo) {
         return empDao.selectEmpByleaderName(leaderName,empNo);
     }
+
+    @Override
+    public String selectEmpByempName(String empName) {
+        return empDao.selectEmpByempName(empName);
+    }
 }

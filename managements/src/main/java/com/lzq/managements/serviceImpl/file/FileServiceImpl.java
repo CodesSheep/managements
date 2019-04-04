@@ -29,7 +29,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<FileEntity> checkFile(String empNo, String userNo, String FirstCreateTime, String LastCreateTime, String fileState, Integer offset, Integer limit) {
-        return fileDao.checkFile(empNo,userNo,FirstCreateTime,LastCreateTime,fileState,offset,limit);
+    public List<FileEntity> checkFile(String empNo, String userNo, String fileName,String FirstCreateTime, String LastCreateTime, String fileState, Integer offset, Integer limit) {
+        return fileDao.checkFile(empNo,userNo,fileName,FirstCreateTime,LastCreateTime,fileState,offset,limit);
     }
 }

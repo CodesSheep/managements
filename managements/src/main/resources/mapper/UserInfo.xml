@@ -8,15 +8,15 @@
 
     <select id="getAllUserInfo" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
-        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.planTime,a.feedback,a.remark,a.discard,c.empName
+        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.adjustTime,a.planTime,a.feedback,a.remark,a.discard,a.empNo,c.empName,a.locking
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
         <if test="empNo == 'admin'" >
-        and a.discard is null or a.discard=0
+            and a.discard is null or a.discard=0
         </if>
         <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
-          and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+            and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         order by b.createTime desc
         <if test="offset != null and limit != null">
@@ -26,12 +26,12 @@
 
     <select id="getAllDiscard" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
-        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.planTime,a.feedback,a.remark,a.discard,c.empName
+        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.adjustTime,a.planTime,a.feedback,a.remark,a.discard,a.empNo,c.empName
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
         and a.discard=1
-        order by b.createTime desc
+        order by a.adjustTime desc
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>
@@ -40,13 +40,16 @@
 
     <select id="getAllUserInfoByloginTime" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
-        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.planTime,a.feedback,a.remark,a.discard,c.empName
+        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.adjustTime,a.planTime,a.feedback,a.remark,a.discard,a.empNo,c.empName
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
 
         <if test="empNo != null and empNo !='admin' and empNo.trim() != ''">
             and c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        </if>
+        <if test="Time !=null and Time.trim() !=''">
+            and b.loginTime between #{Time} and now()
         </if>
         order by b.loginTime desc
         <if test="offset != null and limit != null">
@@ -98,6 +101,12 @@
             <if test="discard != null">
                 discard,
             </if>
+            <if test="locking != null">
+                locking,
+            </if>
+            <if test="adjustTime != null">
+                adjustTime,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="accumulative != null">
@@ -134,7 +143,13 @@
                 #{remark,jdbcType=VARCHAR},
             </if>
             <if test="discard != null">
-                 #{discard,jdbcType=VARCHAR},
+                #{discard,jdbcType=VARCHAR},
+            </if>
+            <if test="locking != null">
+                #{locking,jdbcType=VARCHAR},
+            </if>
+            <if test="adjustTime != null">
+                #{adjustTime,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -164,7 +179,7 @@
     <update id="updateUserinfo" parameterType="UserInfo">
         update userinfo
         <set>
-            <if test="accumulative != null and accumulative.trim() != ''">
+            <if test="accumulative != null">
                 accumulative = #{accumulative,jdbcType=DECIMAL},
             </if>
             <if test="operation != null and operation.trim() != ''">
@@ -198,6 +213,12 @@
             <if test="discard != null and discard.trim() != ''">
                 discard =  #{discard,jdbcType=VARCHAR},
             </if>
+            <if test="locking !=null and locking.trim() !=''" >
+                locking =  #{locking,jdbcType=VARCHAR},
+            </if>
+            <if test="adjustTime != null">
+                adjustTime =  #{adjustTime,jdbcType=TIMESTAMP},
+            </if>
         </set>
         where userNo = #{userNo,jdbcType=VARCHAR}
     </update>
@@ -211,11 +232,11 @@
 
     <select id="checkUserinfo" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
-        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.planTime,a.feedback,a.remark,a.discard,c.empName
+        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.adjustTime,a.planTime,a.feedback,a.remark,a.discard,a.empNo,c.empName,a.locking
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="empNo == 'admin' and FirstCreateTime ==null and FirstCreateTime.trim()=='' " >
+        <if test="empNo == 'admin'  " >
             and a.discard is null or a.discard=0
         </if>
         <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
@@ -233,6 +254,9 @@
         <if test="status !=null ">
             and b.status=#{status}
         </if>
+        <if test="qqAccount !=null and qqAccount.trim() !='' ">
+            and b.qqAccount=#{qqAccount}
+        </if>
         <if test="state !=null and state.trim() !=''">
             and a.state=#{state}
         </if>
@@ -246,7 +270,7 @@
 
     <select id="checkDiscard" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
-        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.planTime,a.feedback,a.remark,a.discard,c.empName
+        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.adjustTime,a.planTime,a.feedback,a.remark,a.discard,a.empNo,c.empName
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
@@ -266,10 +290,13 @@
         <if test="status !=null">
             and b.status=#{status}
         </if>
+        <if test="qqAccount !=null and qqAccount.trim() !='' ">
+            and b.qqAccount=#{qqAccount}
+        </if>
         <if test="state !=null and state.trim() !=''">
             and a.state=#{state}
         </if>
-        order by b.createTime desc
+        order by a.adjustTime desc
         <if test="offset !=null and limit !=null">
             limit #{offset},#{limit}
         </if>
@@ -278,21 +305,25 @@
 
     <select id="checkUserinfoByLoginTime" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
-        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.planTime,a.feedback,a.remark,a.discard,c.empName
+        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.adjustTime,a.planTime,a.feedback,a.remark,a.discard,a.empNo,c.empName
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="empNo == 'admin' and FirstCreateTime ==null and FirstCreateTime.trim()=='' " >
-            and a.discard is null or a.discard=0
-        </if>
+
         <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         <if test="userNo != null and userNo.trim() != ''">
             and b.userNo like concat('%',#{userNo},'%')
         </if>
+        <if test="Time !=null and Time.trim() !=''">
+            and b.loginTime between #{Time} and now()
+        </if>
         <if test="status !=null ">
             and b.status=#{status}
+        </if>
+        <if test="qqAccount !=null and qqAccount.trim() !='' ">
+            and b.qqAccount=#{qqAccount}
         </if>
         <if test="state !=null and state.trim() !=''">
             and a.state=#{state}
@@ -301,6 +332,14 @@
         <if test="offset !=null and limit !=null">
             limit #{offset},#{limit}
         </if>
+    </select>
+
+    <select id="getUpdateTime" resultType="UserInfo">
+        select userNo,updateTime,empNo from userinfo where discard=0 and locking =0
+    </select>
+
+    <select id="getLocking" parameterType="String" resultType="Integer">
+        select count(*) from userinfo where empNo=#{empNo} and  locking =1
     </select>
 
 </mapper>

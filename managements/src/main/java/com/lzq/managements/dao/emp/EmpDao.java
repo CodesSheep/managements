@@ -19,4 +19,5 @@ public interface EmpDao {
     int insertTeam(Team team);
     int updateTeam(Team team);
     List<EmpEntity> selectEmpByleaderName(@Param("leaderName")String leaderName,@Param("empNo")String empNo);
+    String selectEmpByempName(String empName);
 }

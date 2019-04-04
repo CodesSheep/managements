@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.mediaPrice.PriceCategoryDao">
+
+    <select id="listPriceCategory" resultType="PriceCategory">
+        SELECT serial,priceCategoryNo,priceCategoryName,createTime,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime
+        FROM priceCategory ORDER BY priceCategoryName
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="insertPriceCategory" parameterType="PriceCategory">
+        INSERT INTO priceCategory
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="priceCategoryNo != null" >
+                priceCategoryNo,
+            </if>
+            <if test="priceCategoryName != null" >
+                priceCategoryName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="priceCategoryNo != null" >
+                #{priceCategoryNo,jdbcType=VARCHAR},
+            </if>
+            <if test="priceCategoryName != null" >
+                #{priceCategoryName,jdbcType=NVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deletePriceCategory" parameterType="java.util.List">
+        DELETE FROM priceCategory WHERE priceCategoryNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.WbMediaPriceListDao">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from meijiewbmediapricelist
+    where serial = #{serial,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" parameterType="WbMediaPriceList">
+    insert into meijiewbmediapricelist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        serial,
+      </if>
+      <if test="wbMediaNo != null">
+        wbMediaNo,
+      </if>
+      <if test="wbMediaName != null">
+        wbMediaName,
+      </if>
+      <if test="imgURL != null">
+        imgURL,
+      </if>
+      <if test="avgReadMonthly != null">
+        avgReadMonthly,
+      </if>
+      <if test="classInfomation != null">
+        classInfomation,
+      </if>
+      <if test="represent != null">
+        represent,
+      </if>
+      <if test="wbIndustryName != null">
+        wbIndustryName,
+      </if>
+      <if test="districtClassName != null">
+       districtClassName,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="authentication != null">
+        authentication,
+      </if>
+      <if test="hardStraightPrice != null">
+        hardStraightPrice,
+      </if>
+      <if test="hardStraightUpdateTime != null">
+        hardStraightUpdateTime,
+      </if>
+      <if test="hardForwardingPrice != null">
+        hardForwardingPrice,
+      </if>
+      <if test="hardForwardingUpdateTime != null">
+        hardForwardingUpdateTime,
+      </if>
+      <if test="softStraightPrice != null">
+        softStraightPrice,
+      </if>
+      <if test="softStraightUpdateTime != null">
+        softStraightUpdateTime,
+      </if>
+      <if test="softForwardingPrice != null">
+       softForwardingPrice,
+      </if>
+      <if test="softForwardingUpdateTime != null">
+        softForwardingUpdateTime,
+      </if>
+      <if test="hardStraightPriceType != null">
+        hardStraightPriceType,
+      </if>
+      <if test="hardForwardingPriceType != null">
+        hardForwardingPriceType,
+      </if>
+      <if test="softStraightPriceType != null">
+        softStraightPriceType,
+      </if>
+      <if test="softForwardingPriceType != null">
+        softForwardingPriceType,
+      </if>
+      <if test="costPrice != null">
+        costPrice,
+      </if>
+      <if test="mediaManName != null">
+        mediaManName,
+      </if>
+      <if test="mediaManPhone != null">
+        mediaManPhone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        #{serial,jdbcType=BIGINT},
+      </if>
+      <if test="wbMediaNo != null">
+         #{wbMediaNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wbMediaName != null">
+        #{wbMediaName,jdbcType=VARCHAR},
+      </if>
+      <if test="imgURL != null">
+         #{imgURL,jdbcType=VARCHAR},
+      </if>
+      <if test="avgReadMonthly != null">
+        #{avgReadMonthly,jdbcType=VARCHAR},
+      </if>
+      <if test="classInfomation != null">
+         #{classInfomation,jdbcType=VARCHAR},
+      </if>
+      <if test="represent != null">
+       #{represent,jdbcType=VARCHAR},
+      </if>
+      <if test="wbIndustryName != null">
+        #{wbIndustryName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtClassName != null">
+        #{districtClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="authentication != null">
+       #{authentication,jdbcType=VARCHAR},
+      </if>
+      <if test="hardStraightPrice != null">
+         #{hardStraightPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="hardStraightUpdateTime != null">
+         #{hardStraightUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hardForwardingPrice != null">
+         #{hardForwardingPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="hardForwardingUpdateTime != null">
+         #{hardForwardingUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="softStraightPrice != null">
+        #{softStraightPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="softStraightUpdateTime != null">
+         #{softStraightUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="softForwardingPrice != null">
+        #{softForwardingPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="softForwardingUpdateTime != null">
+        #{softForwardingUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hardStraightPriceType != null">
+         #{hardStraightPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="hardForwardingPriceType != null">
+       #{hardForwardingPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="softStraightPriceType != null">
+        #{softStraightPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="softForwardingPriceType != null">
+       #{softForwardingPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="costPrice != null">
+       #{costPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManName != null">
+        #{mediaManName,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManPhone != null">
+        #{mediaManPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="WbMediaPriceList">
+    update meijiewbmediapricelist
+    <set>
+      <if test="wbMediaNo != null">
+        wbMediaNo = #{wbMediaNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wbMediaName != null">
+        wbMediaName = #{wbMediaName,jdbcType=VARCHAR},
+      </if>
+      <if test="imgURL != null">
+        imgURL = #{imgURL,jdbcType=VARCHAR},
+      </if>
+      <if test="avgReadMonthly != null">
+        avgReadMonthly = #{avgReadMonthly,jdbcType=VARCHAR},
+      </if>
+      <if test="classInfomation != null">
+        classInfomation = #{classInfomation,jdbcType=VARCHAR},
+      </if>
+      <if test="represent != null">
+        represent = #{represent,jdbcType=VARCHAR},
+      </if>
+      <if test="wbIndustryName != null">
+        wbIndustryName  = #{wbIndustryName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtClassName != null">
+        districtClassName  = #{districtClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark  = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="authentication != null">
+        authentication  = #{authentication,jdbcType=VARCHAR},
+      </if>
+      <if test="hardStraightPrice != null">
+        hardStraightPrice  = #{hardStraightPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="hardStraightUpdateTime != null">
+        hardStraightUpdateTime  = #{hardStraightUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hardForwardingPrice != null">
+        hardForwardingPrice  = #{hardForwardingPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="hardForwardingUpdateTime != null">
+        hardForwardingUpdateTime  = #{hardForwardingUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="softStraightPrice != null">
+        softStraightPrice = #{softStraightPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="softStraightUpdateTime != null">
+        softStraightUpdateTime = #{softStraightUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="softForwardingPrice != null">
+        softForwardingPrice = #{softForwardingPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="softForwardingUpdateTime != null">
+        softForwardingUpdateTime = #{softForwardingUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hardStraightPriceType != null">
+        hardStraightPriceType = #{hardStraightPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="hardForwardingPriceType != null">
+        hardForwardingPriceType = #{hardForwardingPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="softStraightPriceType != null">
+        softStraightPriceType = #{softStraightPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="softForwardingPriceType != null">
+        softForwardingPriceType = #{softForwardingPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="costPrice != null">
+        costPrice = #{costPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManName != null">
+        mediaManName =  #{mediaManName,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManPhone != null">
+        mediaManPhone =  #{mediaManPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where serial = #{serial,jdbcType=BIGINT}
+  </update>
+
+  <select id="getAllWbMediaPriceList" parameterType="WbMediaPriceList" resultType="WbMediaPriceList">
+    select a.wbMediaNo,a.wbMediaName,a.wbIndustryName,a.imgURL,a.authentication,a.avgReadMonthly,a.classInfomation,a.districtClassName,a.represent,a.remark,a.hardStraightPrice,a.hardStraightPriceType,a.hardForwardingPrice,a.hardForwardingPriceType,
+    a.softStraightPrice,a.softStraightPriceType,a.softForwardingPrice,a.softForwardingPriceType,a.hardStraightUpdateTime,a.hardForwardingUpdateTime,a.softStraightUpdateTime,a.softForwardingUpdateTime,a.costPrice,a.mediaManName,a.mediaManPhone
+    from meijiewbmediapricelist a
+    where 1=1
+    <if test="wbMediaName !=null and wbMediaName.trim() !=''">
+      and  a.wbMediaName like concat('%',#{wbMediaName},'%')
+    </if>
+    <if test="wbIndustryName !=null and wbIndustryName.trim() !=''">
+      and  a.wbIndustryName like concat('%',#{wbIndustryName},'%')
+    </if>
+    <if test="hardStraightPriceType !=null and hardStraightPriceType.trim() !=''">
+      and  a.hardStraightPriceType = #{hardStraightPriceType}
+    </if>
+    <if test="hardForwardingPriceType !=null and hardForwardingPriceType.trim() !=''">
+      and  a.hardForwardingPriceType = #{hardForwardingPriceType}
+    </if>
+    <if test="softStraightPriceType !=null and softStraightPriceType.trim() !=''">
+      and  a.softStraightPriceType = #{softStraightPriceType}
+    </if>
+    <if test="softForwardingPriceType !=null and softForwardingPriceType.trim() !=''">
+      and  a.softForwardingPriceType = #{softForwardingPriceType}
+    </if>
+    <if test="sort != null and sort.trim() != ''">
+      ORDER BY a.${sort}
+    </if>
+    <if test="sort == null or sort.trim() == ''">
+      ORDER BY a.wbMediaName desc
+    </if>
+    <if test="order != null and order.trim() != ''">
+      ${order}
+    </if>
+    <if test="pageNo != null and pageSize != null">
+      limit #{pageNo},#{pageSize}
+    </if>
+  </select>
+    <select id="getWbMediaPriceListByNos" resultType="WbMediaPriceList">
+      select a.wbMediaNo,a.wbMediaName,a.wbIndustryName,a.imgURL,a.authentication,a.avgReadMonthly,a.classInfomation,a.districtClassName,a.represent,a.remark,a.hardStraightPrice,a.hardStraightPriceType,a.hardForwardingPrice,a.hardForwardingPriceType,
+      a.softStraightPrice,a.softStraightPriceType,a.softForwardingPrice,a.softForwardingPriceType,a.hardStraightUpdateTime,a.hardForwardingUpdateTime,a.softStraightUpdateTime,a.softForwardingUpdateTime,a.costPrice,a.mediaManName,a.mediaManPhone
+      from meijiewbmediapricelist a
+        where 1=1
+        <if test="list !=null and list.size()>0">
+            and a.wbMediaNo in
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+  <select id="getCount" resultType="java.lang.Integer">
+    select count(*) from meijiewbmediapricelist
+  </select>
+
+  <delete id="deletewbMediaPriceList" parameterType="java.util.List">
+    DELETE FROM meijiewbmediapricelist WHERE wbMediaNo IN
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

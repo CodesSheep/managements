@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,8 +28,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfo> getAllUserInfoByloginTime(String empNo,Integer offset, Integer limit) {
-        return userDao.getAllUserInfoByloginTime(empNo,offset,limit);
+    public List<UserInfo> getAllUserInfoByloginTime(String empNo,String Time,Integer offset, Integer limit) {
+        return userDao.getAllUserInfoByloginTime(empNo,Time,offset,limit);
     }
 
     @Override
@@ -63,17 +64,27 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfo> checkUserinfo(String empNo,String userNo, String FirstCreateTime, String LastCreateTime, Integer status, String state, Integer offset, Integer limit) {
-        return userDao.checkUserinfo(empNo,userNo,FirstCreateTime, LastCreateTime, status, state, offset, limit);
+    public List<UserInfo> checkUserinfo(String empNo,String userNo, String FirstCreateTime, String LastCreateTime, Integer status,String qqAccount, String state, Integer offset, Integer limit) {
+        return userDao.checkUserinfo(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
     }
 
     @Override
-    public List<UserInfo> checkDiscard(String empNo, String userNo, String FirstCreateTime, String LastCreateTime, Integer status, String state, Integer offset, Integer limit) {
-        return userDao.checkDiscard(empNo,userNo,FirstCreateTime, LastCreateTime, status, state, offset, limit);
+    public List<UserInfo> checkDiscard(String empNo, String userNo, String FirstCreateTime, String LastCreateTime, Integer status,String qqAccount, String state, Integer offset, Integer limit) {
+        return userDao.checkDiscard(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount,  state, offset, limit);
     }
 
     @Override
-    public List<UserInfo> checkUserinfoByLoginTime(String empNo, String userNo, Integer status, String state, Integer offset, Integer limit) {
-        return userDao.checkUserinfoByLoginTime(empNo,userNo, status, state, offset, limit);
+    public List<UserInfo> checkUserinfoByLoginTime(String empNo, String userNo,String Time, Integer status,String qqAccount, String state, Integer offset, Integer limit) {
+        return userDao.checkUserinfoByLoginTime(empNo,userNo,Time,status,qqAccount,state, offset, limit);
+    }
+
+    @Override
+    public List<UserInfo> getUpdateTime() {
+        return userDao.getUpdateTime();
+    }
+
+    @Override
+    public int getLocking(String empNo) {
+        return userDao.getLocking(empNo);
     }
 }

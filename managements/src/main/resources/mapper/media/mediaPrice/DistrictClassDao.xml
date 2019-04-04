@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.mediaPrice.DistrictClassDao">
+
+    <select id="listDistrictClass" resultType="DistrictClass">
+        SELECT serial,districtClassNo,districtClassName,createTime,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime
+        FROM districtClass ORDER BY districtClassName
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="insertDistrictClass" parameterType="DistrictClass">
+        INSERT INTO districtClass
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="districtClassNo != null" >
+                districtClassNo,
+            </if>
+            <if test="districtClassName != null" >
+                districtClassName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="districtClassNo != null" >
+                #{districtClassNo,jdbcType=VARCHAR},
+            </if>
+            <if test="districtClassName != null" >
+                #{districtClassName,jdbcType=NVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteDistrictClass" parameterType="java.util.List">
+        DELETE FROM districtClass WHERE districtClassNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

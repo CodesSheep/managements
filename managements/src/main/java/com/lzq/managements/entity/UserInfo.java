@@ -38,6 +38,6 @@ public class UserInfo implements Serializable {
     private String remark;
     private String source;
     private String discard;
-
-
+    private String locking;
+    private Date adjustTime;
 }

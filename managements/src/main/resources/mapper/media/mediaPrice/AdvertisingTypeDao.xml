@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.mediaPrice.AdvertisingTypeDao">
+
+    <select id="listAdvertisingType" resultType="AdvertisingType">
+        SELECT serial,advertisingTypeNo,advertisingTypeName,createTime,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime
+        FROM advertisingType ORDER BY advertisingTypeName
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="insertAdvertisingType" parameterType="AdvertisingType">
+        INSERT INTO advertisingType
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="advertisingTypeNo != null" >
+                advertisingTypeNo,
+            </if>
+            <if test="advertisingTypeName != null" >
+                advertisingTypeName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="advertisingTypeNo != null" >
+                #{advertisingTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="advertisingTypeName != null" >
+                #{advertisingTypeName,jdbcType=NVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteAdvertisingType" parameterType="java.util.List">
+        DELETE FROM advertisingType WHERE advertisingTypeNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

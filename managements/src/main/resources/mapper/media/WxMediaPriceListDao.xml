@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.WxMediaPriceListDao">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from meijiewxmediapricelist
+    where serial = #{serial,jdbcType=BIGINT}
+  </delete>
+
+    <select id="getAllWxMediaPriceList" parameterType="WxMediaPriceList" resultType="WxMediaPriceList">
+        select
+        a.serial, a.wxMediaNo,a.wxName,a.wxNo,a.fansNum,a.wxIndustryName,a.districtClassName,a.headlinePrice,a.headlinePriceUpdateTime,a.noHeadlinePrice,a.noHeadlinePriceUpdateTime,a.imgURL,
+        a.remark,a.priceType,a.noPriceType,a.tailPrice,a.tailPriceUpdateTime,a.dispatchInterval,a.comprehensiveScore,a.describe,a.label,a.Original,a.Reading,a.recentReading,
+        a.readingType,a.fansType,a.costPrice,a.mediaManName,a.mediaManPhone
+        from meijiewxmediapricelist a
+        where 1=1
+        <if test="wxIndustryName !=null and wxIndustryName.trim() != ''">
+            and a.wxIndustryName LIKE concat('%',#{wxIndustryName},'%')
+        </if>
+        <if test="wxName != null and wxName.trim() != ''">
+            AND a.wxName LIKE concat('%',#{wxName},'%')
+        </if>
+        <if test="priceType != null and priceType.trim() != ''">
+            AND a.priceType =#{priceType}
+        </if>
+        <if test="noPriceType != null and noPriceType.trim() != ''">
+            AND a.noPriceType =#{noPriceType}
+        </if>
+        <if test="tailPriceType != null and tailPriceType.trim() != ''">
+            AND a.tailPriceType =#{tailPriceType}
+        </if>
+        <if test="readingType != null and readingType.trim() != ''">
+            AND a.readingType =#{readingType}
+        </if>
+        <if test="fansType != null and fansType.trim() != ''">
+            AND a.fansType =#{fansType}
+        </if>
+        <if test="sort != null and sort.trim() != ''">
+            ORDER BY a.${sort}
+        </if>
+        <if test="sort == null or sort.trim() == ''">
+            ORDER BY a.wxName desc
+        </if>
+        <if test="order != null and order.trim() != ''">
+            ${order}
+        </if>
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <select id="getCount" resultType="Integer">
+    select count(*) from  meijiewxmediapricelist
+  </select>
+
+    <insert id="insertWxMediaPriceList" parameterType="WxMediaPriceList">
+        insert into meijiewxmediapricelist
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serial != null">
+                serial,
+            </if>
+            <if test="wxMediaNo != null">
+                wxMediaNo,
+            </if>
+            <if test="wxName != null">
+                wxName,
+            </if>
+            <if test="wxNo != null">
+                wxNo,
+            </if>
+            <if test="wxIndustryName != null">
+                wxIndustryName,
+            </if>
+            <if test="fansNum != null">
+                fansNum,
+            </if>
+            <if test="headlinePrice != null">
+                headlinePrice,
+            </if>
+            <if test="noHeadlinePrice != null">
+                noHeadlinePrice,
+            </if>
+            <if test="tailPrice != null">
+                tailPrice,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="costPrice != null">
+                costPrice,
+            </if>
+            <if test="mediaManName != null">
+                mediaManName,
+            </if>
+            <if test="mediaManPhone != null">
+                mediaManPhone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serial != null">
+                #{serial,jdbcType=BIGINT},
+            </if>
+            <if test="wxMediaNo != null">
+                #{wxMediaNo,jdbcType=VARCHAR},
+            </if>
+            <if test="wxName != null">
+                #{wxName,jdbcType=VARCHAR},
+            </if>
+            <if test="wxNo != null">
+                #{wxNo,jdbcType=VARCHAR},
+            </if>
+            <if test="wxIndustryName != null">
+                #{wxIndustryName,jdbcType=VARCHAR},
+            </if>
+            <if test="fansNum != null">
+                #{fansNum,jdbcType=VARCHAR},
+            </if>
+            <if test="headlinePrice != null">
+                #{headlinePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="noHeadlinePrice != null">
+                #{noHeadlinePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="tailPrice != null">
+                #{tailPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="costPrice != null">
+                #{costPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaManName != null">
+                #{mediaManName,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaManPhone != null">
+                #{mediaManPhone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateWxMediaPriceList" parameterType="WxMediaPriceList">
+        update meijiewxmediapricelist
+        <set>
+            <if test="wxName != null">
+                wxName = #{wxName,jdbcType=VARCHAR},
+            </if>
+            <if test="wxNo != null">
+                wxNo = #{wxNo,jdbcType=VARCHAR},
+            </if>
+            <if test="wxIndustryName != null">
+                wxIndustryName = #{wxIndustryName,jdbcType=VARCHAR},
+            </if>
+            <if test="fansNum != null">
+                fansNum = #{fansNum,jdbcType=VARCHAR},
+            </if>
+            <if test="headlinePrice != null">
+                headlinePrice = #{headlinePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="noHeadlinePrice != null">
+                noHeadlinePrice = #{noHeadlinePrice,jdbcType=VARCHAR},
+            </if>
+            <if test="tailPrice != null">
+                tailPrice = #{tailPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="costPrice != null">
+                costPrice = #{costPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaManName != null">
+                mediaManName =  #{mediaManName,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaManPhone != null">
+                mediaManPhone =  #{mediaManPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where wxMediaNo = #{wxMediaNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getWxMediaPriceListByNos" resultType="WxMediaPriceList">
+        select
+        a.serial, a.wxMediaNo,
+        a.wxName,a.wxNo,a.fansNum,a.wxIndustryName,a.headlinePrice,a.headlinePriceUpdateTime,a.noHeadlinePrice,a.noHeadlinePriceUpdateTime,a.imgURL,
+        a.remark,a.priceType,a.noPriceType,a.tailPrice,a.tailPriceUpdateTime,a.dispatchInterval,a.comprehensiveScore,a.describe,a.label,a.Original,a.Reading,a.recentReading,
+        a.readingType,a.fansType,a.costPrice,a.mediaManName,a.mediaManPhone
+        from meijiewxmediapricelist a
+        where 1=1
+        <if test="list !=null and list.size()>0">
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <delete id="deletewxMediaPriceList" parameterType="java.util.List">
+        DELETE FROM meijiewxmediapricelist WHERE wxMediaNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

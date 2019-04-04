@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.zmtPriceList.ZmtIndustryDao">
+
+  <select id="getAllZmtIndustry" resultType="ZmtIndustry">
+    select serial,industryNo,industryName,createTime from zmtindustry
+    where 1=1
+    <if test="pageNo !=null and pageSize !=null">
+      limit #{pageNo},#{pageSize}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from zmtindustry
+    where serial = #{serial,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insertZmtIndustry" parameterType="ZmtIndustry">
+    insert into zmtindustry
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        serial,
+      </if>
+      <if test="industryNo != null">
+        industryNo,
+      </if>
+      <if test="industryName != null">
+        industryName,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        #{serial,jdbcType=BIGINT},
+      </if>
+      <if test="industryNo != null">
+        #{industryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="industryName != null">
+        #{industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateZmtIndustry" parameterType="ZmtIndustry">
+    update zmtindustry
+    <set>
+      <if test="industryNo != null">
+        industryNo = #{industryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="industryName != null">
+        industryName = #{industryName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where serial = #{serial,jdbcType=BIGINT}
+  </update>
+</mapper>

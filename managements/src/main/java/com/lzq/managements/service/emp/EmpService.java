@@ -16,4 +16,5 @@ public interface EmpService {
     int insertTeam(Team team);
     int updateTeam(Team team);
     List<EmpEntity> selectEmpByleaderName(String leaderName,String empNo);
+    String selectEmpByempName(String empName);
 }

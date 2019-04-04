@@ -13,6 +13,7 @@ public interface FileService {
 
     List<FileEntity> checkFile(String empNo,
                                String userNo,
+                               String fileName,
                                String FirstCreateTime,
                                String LastCreateTime,
                                String fileState,

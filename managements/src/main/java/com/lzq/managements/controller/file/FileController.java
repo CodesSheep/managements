@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lzq.managements.entity.file.FileEntity;
 import com.lzq.managements.service.file.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ public class FileController {
     private FileService fileService;
 
     @RequestMapping("getAllFile")
+    @Cacheable(value = "file",keyGenerator = "keyGenerator")
     public String getAllFile(String empNo,Integer offset, Integer limit){
         JSONObject json =new JSONObject();
         try{
@@ -34,7 +36,8 @@ public class FileController {
 
 
     @RequestMapping("checkFile")
-    public String checkUserinfo(String empNo, String userNo, String FirstCreateTime, String LastCreateTime, String fileState, Integer offset, Integer limit){
+    @Cacheable(value = "file",keyGenerator = "keyGenerator")
+    public String checkUserinfo(String empNo, String userNo,String fileName,String FirstCreateTime, String LastCreateTime, String fileState, Integer offset, Integer limit){
         JSONObject json=new JSONObject();
         try{
 /*
@@ -42,8 +45,8 @@ public class FileController {
                     FirstCreateTime = "2018-8-30 00:00:00";
 
                 }*/
-            List<FileEntity> list=fileService.checkFile(empNo,userNo,FirstCreateTime, LastCreateTime, fileState, offset, limit);
-            int total=fileService.checkFile(empNo,userNo,FirstCreateTime, LastCreateTime, fileState, null, null).size();
+            List<FileEntity> list=fileService.checkFile(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState, offset, limit);
+            int total=fileService.checkFile(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState, null, null).size();
 
             json.put("rows",list);
             json.put("total",total);

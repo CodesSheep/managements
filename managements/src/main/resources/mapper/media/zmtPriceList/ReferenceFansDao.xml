@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.zmtPriceList.ReferenceFansDao">
+
+  <select id="getAllReferenceFans" resultType="ReferenceFans">
+    select serial,referencefansNo,referencefanstype,createTime from referencefans
+    where 1=1
+    <if test="pageNo !=null and pageSize !=null">
+      limit #{pageNo},#{pageSize}
+    </if>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from referencefans
+    where serial = #{serial,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertReferenceFans" parameterType="ReferenceFans">
+    insert into referencefans
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        serial,
+      </if>
+      <if test="referencefansNo != null">
+        referencefansNo,
+      </if>
+      <if test="referencefanstype != null">
+        referencefanstype,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        #{serial,jdbcType=BIGINT},
+      </if>
+      <if test="referencefansNo != null">
+        #{referencefansNo,jdbcType=VARCHAR},
+      </if>
+      <if test="referencefanstype != null">
+        #{referencefanstype,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateReferenceFans" parameterType="ReferenceFans">
+    update referencefans
+    <set>
+      <if test="referencefansNo != null">
+        referencefansNo = #{referencefansNo,jdbcType=VARCHAR},
+      </if>
+      <if test="referencefanstype != null">
+        referencefanstype = #{referencefanstype,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where serial = #{serial,jdbcType=BIGINT}
+  </update>
+</mapper>

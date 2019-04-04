@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.zmtPriceList.ZmtPriceClassificationDao">
+  <resultMap id="BaseResultMap" type="com.lzq.managements.entity.media.zmtPriceList.ZmtPriceClassification">
+    <constructor>
+      <idArg column="serial" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="priceNo" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="priceName" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="createTime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    serial, priceNo, priceName, createTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from zmtpriceclassification
+    where serial = #{serial,jdbcType=BIGINT}
+  </select>
+
+  <select id="getAllZmtPriceClassification" resultType="ZmtPriceClassification">
+    select serial,priceNo,priceName,createTime from zmtpriceclassification
+    where 1=1
+    <if test="pageNo !=null and pageSize !=null">
+      limit #{pageNo}.#{pageSize}
+    </if>
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from zmtpriceclassification
+    where serial = #{serial,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insertZmtPriceClassification" parameterType="com.lzq.managements.entity.media.zmtPriceList.ZmtPriceClassification">
+    insert into zmtpriceclassification
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        serial,
+      </if>
+      <if test="priceNo != null">
+        priceNo,
+      </if>
+      <if test="priceName != null">
+        priceName,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        #{serial,jdbcType=BIGINT},
+      </if>
+      <if test="priceNo != null">
+        #{priceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="priceName != null">
+        #{priceName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByZmtPriceClassification" parameterType="com.lzq.managements.entity.media.zmtPriceList.ZmtPriceClassification">
+    update zmtpriceclassification
+    <set>
+      <if test="priceNo != null">
+        priceNo = #{priceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="priceName != null">
+        priceName = #{priceName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where serial = #{serial,jdbcType=BIGINT}
+  </update>
+
+</mapper>

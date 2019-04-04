@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.UserDao">
+
+    <select id="listUser" resultType="User">
+        select serial,userNo,userName,password,qqAccount,phoneNo,status,vipLevel,vipLevelZN,balance,createTime,
+        DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime,loginTime,DATE_FORMAT(loginTime,'%Y-%m-%d %H:%i:%S') lTime,loginIP,frequency
+        from user where 1 = 1
+        <if test="fuzzyQuery != null and fuzzyQuery.trim() != ''">
+            and userName like concat('%',#{fuzzyQuery},'%')
+        </if>
+        <if test="sort != null and sort.trim() != ''">
+            order by ${sort}
+            <if test="order != null and order.trim() != ''">
+                ${order}
+            </if>
+        </if>
+        <if test="sort == null or sort.trim() == ''">
+            order by createTime desc
+        </if>
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findByUserNo" parameterType="java.lang.String" resultType="User">
+        select serial,userNo,userName,password,qqAccount,phoneNo,status,vipLevel,vipLevelZN,balance,createTime,
+        DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime,loginTime,DATE_FORMAT(loginTime,'%Y-%m-%d %H:%i:%S') lTime,loginIP,frequency
+        from user where userNo = #{0};
+    </select>
+
+    <select id="findByUserNoAndPassword" resultType="User">
+        select serial,userNo,userName,password,qqAccount,phoneNo,status,vipLevel,vipLevelZN,balance,createTime,
+        DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime,loginTime,DATE_FORMAT(loginTime,'%Y-%m-%d %H:%i:%S') lTime,loginIP,frequency
+        from user where (userNo = #{userNo} or phoneNo = #{userNo}) and password = #{password}
+    </select>
+
+    <select id="findByPhoneNo" parameterType="java.lang.String" resultType="User">
+        select serial,userNo,userName,password,qqAccount,phoneNo,status,vipLevel,vipLevelZN,balance,createTime,
+        DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime,loginTime,DATE_FORMAT(loginTime,'%Y-%m-%d %H:%i:%S') lTime,loginIP,frequency
+        from user where phoneNo = #{0}
+    </select>
+
+    <insert id="insertUser" parameterType="User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userNo != null">
+                userNo,
+            </if>
+            <if test="userName != null">
+                userName,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="qqAccount != null">
+                qqAccount,
+            </if>
+            <if test="phoneNo != null">
+                phoneNo,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="vipLevel != null">
+                vipLevel,
+            </if>
+            <if test="vipLevelZN != null">
+                vipLevelZN,
+            </if>
+            <if test="balance != null">
+                balance,
+            </if>
+            <if test="loginTime != null">
+                loginTime,
+            </if>
+            <if test="loginIP != null">
+                loginIP,
+            </if>
+            <if test="frequency != null">
+                frequency,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userNo != null">
+                #{userNo,jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="qqAccount != null">
+                #{qqAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNo != null">
+                #{phoneNo,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="vipLevel != null">
+                #{vipLevel,jdbcType=INTEGER},
+            </if>
+            <if test="vipLevelZN != null">
+                #{vipLevelZN,jdbcType=VARCHAR},
+            </if>
+            <if test="balance != null">
+                #{balance,jdbcType=DECIMAL},
+            </if>
+            <if test="loginTime != null">
+                #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginIP != null">
+                #{loginIP,jdbcType=VARCHAR},
+            </if>
+            <if test="frequency != null">
+                #{frequency,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        <set>
+            <if test="userName != null">
+                userName = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="qqAccount != null">
+                qqAccount = #{qqAccount,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNo != null">
+                phoneNo = #{phoneNo,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="balance != null">
+                balance = #{balance,jdbcType=DECIMAL},
+            </if>
+            <if test="vipLevel != null">
+                vipLevel = #{vipLevel,jdbcType=INTEGER},
+            </if>
+            <if test="vipLevelZN != null">
+                vipLevelZN = #{vipLevelZN,jdbcType=VARCHAR},
+            </if>
+            <if test="loginTime != null">
+                loginTime = #{loginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginIP != null">
+                loginIP = #{loginIP,jdbcType=VARCHAR},
+            </if>
+            <if test="frequency != null">
+                frequency = #{frequency,jdbcType=INTEGER},
+            </if>
+        </set>
+        where userNo = #{userNo,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteUser" parameterType="java.util.List">
+        delete from user where userNo in
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    
+
+
+    <update id="updateBalanceByUserNo" parameterType="User">
+        update user
+        <set>
+            <if test="balance != null">
+                balance = balance + #{balance,jdbcType=DECIMAL},
+            </if>
+            <if test="vipLevel != null">
+                vipLevel = #{vipLevel,jdbcType=INTEGER},
+            </if>
+            <if test="vipLevelZN != null">
+                vipLevelZN = #{vipLevelZN,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+        </set>
+        where userNo = #{userNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="checkUser" resultType="User">
+        select u.serial,u.userNo,u.password,u.qqAccount,u.phoneNo,u.status,u.vipLevel,u.vipLevelZN,u.balance,u.createTime,
+        DATE_FORMAT(u.createTime,'%Y-%m-%d %H:%i:%S') cTime,u.loginTime,DATE_FORMAT(u.loginTime,'%Y-%m-%d %H:%i:%S') lTime,u.loginIP
+        from User u
+        where 1=1
+        <if test="userNo != null and userNo.trim() != ''">
+            and u.userNo like concat('%',#{userNo},'%')
+        </if>
+        <if test="qqAccount != null and qqAccount.trim() != ''">
+            and u.qqAccount like concat('%',#{qqAccount},'%')
+        </if>
+        <if test="FirstCreateTime != null and LastCreateTime != null and LastCreateTime.trim() != ''">
+            and u.createTime between #{FirstCreateTime} and #{LastCreateTime}
+        </if>
+        <if test="FirstCreateTime != null and (LastCreateTime == null or LastCreateTime.trim() == '')">
+            and u.createTime between #{FirstCreateTime} and now()
+        </if>
+        <if test="status !=null">
+            and u.status=#{status}
+        </if>
+        order by u.createTime desc
+        <if test="pageNo !=null and pageSize !=null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <select id="checkUserByLoginTime" resultType="User">
+        select u.serial,u.userNo,u.password,u.qqAccount,u.phoneNo,u.status,u.vipLevel,u.vipLevelZN,u.balance,u.createTime,
+        DATE_FORMAT(u.createTime,'%Y-%m-%d %H:%i:%S') cTime,u.loginTime,DATE_FORMAT(u.loginTime,'%Y-%m-%d %H:%i:%S') lTime,u.loginIP
+        from User u
+        where 1=1
+        <if test="userNo != null and userNo.trim() != ''">
+            and u.userNo like concat('%',#{userNo},'%')
+        </if>
+        <if test="qqAccount != null and qqAccount.trim() != ''">
+            and u.qqAccount like concat('%',#{qqAccount},'%')
+        </if>
+        <if test="FirstCreateTime != null and LastCreateTime != null and LastCreateTime.trim() != ''">
+            and u.createTime between #{FirstCreateTime} and #{LastCreateTime}
+        </if>
+        <if test="FirstCreateTime != null and (LastCreateTime == null or LastCreateTime.trim() == '')">
+            and u.createTime between #{FirstCreateTime} and now()
+        </if>
+        <if test="status !=null">
+            and u.status=#{status}
+        </if>
+        order by u.loginTime desc
+        <if test="pageNo !=null and pageSize !=null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <update id="updateFrequencyByUserNo" parameterType="User">
+        update user
+        <set>
+            <if test="frequency != null">
+                frequency = #{frequency,jdbcType=INTEGER},
+            </if>
+        </set>
+        where userNo = #{userNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="findUser" resultType="User">
+        select
+        (SELECT count(*) from user c LEFT JOIN userinfo d on c.userNo=d.userNo  where c.status='1' and d.empNo=#{empNo} and d.discard='0') as alreadyCooperateNumber,
+        (SELECT count(*) from user c LEFT JOIN userinfo d on c.userNo=d.userNo  where c.status='0' and d.empNo=#{empNo} and d.discard='0') as noCooperateNumber,
+        (SELECT count(*) from user c LEFT JOIN userinfo d on c.userNo=d.userNo  where d.empNo=#{empNo} and d.discard='0')as allCustomerNumber
+        from dual
+    </select>
+
+</mapper>

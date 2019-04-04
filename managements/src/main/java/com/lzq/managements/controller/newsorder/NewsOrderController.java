@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lzq.managements.entity.newsorder.NewsOrder;
 import com.lzq.managements.service.newsorder.NewsOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ public class NewsOrderController {
     private NewsOrderService newsOrderService;
 
     @RequestMapping("getAllNewsOrder")
+    @Cacheable(value = "newsorder",keyGenerator = "keyGenerator")
     public String getAllNewsOrder(String empNo,Integer offset,Integer limit){
         JSONObject json=new JSONObject();
         try{
@@ -33,6 +35,7 @@ public class NewsOrderController {
 
 
     @RequestMapping("checkNewsOrder")
+    @Cacheable(value = "newsorder",keyGenerator = "keyGenerator")
     public String checkNewsOrder(String empNo, String userNo,String mediaName,String FirstCreateTime, String LastCreateTime, String state, Integer offset, Integer limit){
         JSONObject json=new JSONObject();
         try{

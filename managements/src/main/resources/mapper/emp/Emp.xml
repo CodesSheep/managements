@@ -134,16 +134,21 @@
         where  teamNo=#{teamNo,jdbcType=VARCHAR}
     </update>
 
+    <select id="selectEmpByempName" parameterType="String" resultType="String">
+        select empNo from emp where empName=#{empName}
+    </select>
+
+
     <select id="selectEmpByleaderName" parameterType="String" resultType="EmpEntity">
-    select distinct a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.loginIP,b.teamNo,b.teamName,b.leaderName from emp a inner join team b  on a.teamNo=b.teamNo
-    where 1=1
+        select distinct a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.loginIP,b.teamNo,b.teamName,b.leaderName from emp a inner join team b  on a.teamNo=b.teamNo
+        where 1=1
         <!--<if test="leaderName != null and leaderName.trim() != ''">
             and b.leaderName=#{leaderName,jdbcType=VARCHAR}
         </if>
         <if test="empNo != null and empNo.trim() != ''">
             and a.empNo=#{empNo,jdbcType=VARCHAR}
         </if>-->
-      and b.teamNo > 0
-      order by a.createTime desc
+        and b.teamNo > 0
+        order by a.createTime desc
     </select>
 </mapper>

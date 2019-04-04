@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.mediaPrice.NewsFeedDao">
+
+    <select id="listNewsFeed" resultType="NewsFeed">
+        SELECT serial,newsFeedNo,newsFeedName,createTime,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime
+        FROM newsFeed ORDER BY newsFeedName
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="insertNewsFeed" parameterType="NewsFeed">
+        INSERT INTO newsFeed
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="newsFeedNo != null" >
+                newsFeedNo,
+            </if>
+            <if test="newsFeedName != null" >
+                newsFeedName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="newsFeedNo != null" >
+                #{newsFeedNo,jdbcType=VARCHAR},
+            </if>
+            <if test="newsFeedName != null" >
+                #{newsFeedName,jdbcType=NVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteNewsFeed" parameterType="java.util.List">
+        DELETE FROM newsFeed WHERE newsFeedNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

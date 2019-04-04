@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.mediaPrice.MediaTypeDao">
+
+    <select id="listMediaType" resultType="MediaType">
+        SELECT serial,mediaTypeNo,mediaTypeName,createTime,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime
+        FROM mediaType ORDER BY mediaTypeName
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="insertMediaType" parameterType="MediaType">
+        INSERT INTO mediaType
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="mediaTypeNo != null" >
+                mediaTypeNo,
+            </if>
+            <if test="mediaTypeName != null" >
+                mediaTypeName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="mediaTypeNo != null" >
+                #{mediaTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaTypeName != null" >
+                #{mediaTypeName,jdbcType=NVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteMediaType" parameterType="java.util.List">
+        DELETE FROM mediaType WHERE mediaTypeNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

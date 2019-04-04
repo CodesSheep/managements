@@ -31,4 +31,14 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Feedback selectFeedbackBycreateTime(String userNo) {
         return feedbackDao.selectFeedbackBycreateTime(userNo);
     }
+
+    @Override
+    public String findEmpByEmpNo(String empNo) {
+        return feedbackDao.findEmpByEmpNo(empNo);
+    }
+
+    @Override
+    public int deleteFeedback( String userNo) {
+        return feedbackDao.deleteFeedback(userNo);
+    }
 }

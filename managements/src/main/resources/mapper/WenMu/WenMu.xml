@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.wenmu.WenMuDao">
+    <select id="getAllWenMu" parameterType="WenMu" resultType="WenMu">
+        select u.serial,u.userNo,u.password,u.qqAccount,u.phoneNo,u.status,u.vipLevel,u.vipLevelZN,u.balance,u.createTime,
+        u.loginTime,u.loginIP
+        from WenMu.user u
+        where 1=1
+        <if test="userNo != null and userNo.trim() != ''">
+            and u.userNo like concat('%',#{userNo},'%')
+        </if>
+        <if test="qqAccount != null and qqAccount.trim() != ''">
+            and u.qqAccount like concat('%',#{qqAccount},'%')
+        </if>
+        <if test="FirstCreateTime != null and LastCreateTime != null and LastCreateTime.trim() != ''">
+            and u.createTime between #{FirstCreateTime} and #{LastCreateTime}
+        </if>
+        <if test="FirstCreateTime != null and (LastCreateTime == null or LastCreateTime.trim() == '')">
+            and u.createTime between #{FirstCreateTime} and now()
+        </if>
+        <if test="status !=null">
+            and u.status=#{status}
+        </if>
+        order by u.loginTime desc
+        <if test="pageNo !=null and pageSize !=null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+</mapper>

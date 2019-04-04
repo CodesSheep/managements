@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.zmtPriceList.ZmtPriceListDao">
+
+  <select id="getAllZmtPriceList" parameterType="ZmtPriceList" resultType="ZmtPriceList">
+    select
+    a.serial, a.zmtNo, a.zmtName, a.platformNo,a.zmtURL,a.zmtpersonURL,b.platformName, a.industryNo,c.industryName,a.districtClassNo,d.districtClassName,a.advancedPrice, a.ordinaryPrice,a.ordinaryVipPrice,
+    a.retailPrice, a.state,a.referencefansNo,e.referencefanstype, a.referencereadNo,f.referencereadtype,a.priceNo,g.priceName,a.remark,a.costPrice,a.mediaManName,a.mediaManPhone
+    from meijiezmtpricelist a
+    left join zmtindustry c on a.industryNo=c.industryNo
+    left join platform b on a.platformNo=b.platformNo
+    left join districtclass d on a.districtClassNo=d.districtClassNo
+    left join referencefans e on a.referencefansNo=e.referencefansNo
+    left join referenceread f on a.referencereadNo=f.referencereadNo
+    left join zmtpriceclassification g on a.priceNo=g.priceNo
+    where 1=1
+    <if test="platformNo !=null and platformNo.trim() != ''">
+      and a.platformNo=#{platformNo}
+    </if>
+    <if test="industryNo !=null and industryNo.trim() != ''">
+      and a.industryNo=#{industryNo}
+    </if>
+    <if test="districtClassNo !=null and districtClassNo.trim() != ''">
+      and a.districtClassNo=#{districtClassNo}
+    </if>
+    <if test="referencefansNo !=null and referencefansNo.trim() != ''">
+      and a.referencefansNo=#{referencefansNo}
+    </if>
+    <if test="referencereadNo !=null and referencereadNo.trim() != ''">
+      and a.referencereadNo=#{referencereadNo}
+    </if>
+    <if test="priceNo !=null and priceNo.trim() != ''">
+      and a.priceNo=#{priceNo}
+    </if>
+    <if test="zmtName != null and zmtName.trim() != ''">
+      AND a.zmtName LIKE concat('%',#{zmtName},'%')
+    </if>
+    <if test="state !=null and state.trim() !=''">
+       and  a.state=#{state}
+    </if>
+    <if test="sort != null and sort.trim() != ''">
+      ORDER BY a.${sort}
+    </if>
+    <if test="sort == null or sort.trim() == ''">
+      ORDER BY a.zmtName desc
+    </if>
+    <if test="order != null and order.trim() != ''">
+      ${order}
+    </if>
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+
+  <insert id="insertZmtPriceList" parameterType="ZmtPriceList">
+    insert into meijiezmtpricelist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        serial,
+      </if>
+      <if test="zmtNo != null">
+        zmtNo,
+      </if>
+      <if test="zmtName != null">
+        zmtName,
+      </if>
+      <if test="platformNo != null">
+        platformNo,
+      </if>
+      <if test="industryNo != null">
+        industryNo,
+      </if>
+      <if test="districtClassNo != null">
+        districtClassNo,
+      </if>
+      <if test="advancedPrice != null">
+        advancedPrice,
+      </if>
+      <if test="ordinaryPrice != null">
+        ordinaryPrice,
+      </if>
+      <if test="ordinaryVipPrice != null">
+        ordinaryVipPrice,
+      </if>
+      <if test="retailPrice != null">
+        retailPrice,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="referencefansNo != null">
+        referencefansNo,
+      </if>
+      <if test="referencereadNo != null">
+        referencereadNo,
+      </if>
+      <if test="priceNo != null">
+        priceNo,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="zmtURL != null">
+        zmtURL,
+      </if>
+      <if test="zmtpersonURL != null">
+        zmtpersonURL,
+      </if>
+      <if test="costPrice != null">
+        costPrice,
+      </if>
+      <if test="mediaManName != null">
+        mediaManName,
+      </if>
+      <if test="mediaManPhone != null">
+        mediaManPhone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        #{serial,jdbcType=BIGINT},
+      </if>
+      <if test="zmtNo != null">
+        #{zmtNo,jdbcType=VARCHAR},
+      </if>
+      <if test="zmtName != null">
+        #{zmtName,jdbcType=VARCHAR},
+      </if>
+      <if test="platformNo != null">
+        #{platformNo,jdbcType=VARCHAR},
+      </if>
+      <if test="industryNo != null">
+        #{industryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="districtClassNo != null">
+        #{districtClassNo,jdbcType=VARCHAR},
+      </if>
+      <if test="advancedPrice != null">
+        #{advancedPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="ordinaryPrice != null">
+        #{ordinaryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="ordinaryVipPrice != null">
+        #{ordinaryVipPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="retailPrice != null">
+        #{retailPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="referencefansNo != null">
+        #{referencefansNo,jdbcType=VARCHAR},
+      </if>
+      <if test="referencereadNo != null">
+        #{referencereadNo,jdbcType=VARCHAR},
+      </if>
+      <if test="priceNo != null">
+        #{priceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="zmtURL != null">
+        #{zmtURL,jdbcType=VARCHAR},
+      </if>
+      <if test="zmtpersonURL != null">
+        #{zmtpersonURL,jdbcType=VARCHAR},
+      </if>
+      <if test="costPrice != null">
+        #{costPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManName != null">
+        #{mediaManName,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManPhone != null">
+        #{mediaManPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateZmtPriceList" parameterType="ZmtPriceList">
+    update meijiezmtpricelist
+    <set>
+      <if test="zmtNo != null">
+        zmtNo = #{zmtNo,jdbcType=VARCHAR},
+      </if>
+      <if test="zmtName != null">
+        zmtName = #{zmtName,jdbcType=VARCHAR},
+      </if>
+      <if test="platformNo != null">
+        platformNo = #{platformNo,jdbcType=VARCHAR},
+      </if>
+      <if test="industryNo != null">
+        industryNo = #{industryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="districtClassNo != null">
+        districtClassNo = #{districtClassNo,jdbcType=VARCHAR},
+      </if>
+      <if test="advancedPrice != null">
+        advancedPrice = #{advancedPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="ordinaryPrice != null">
+        ordinaryPrice = #{ordinaryPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="ordinaryVipPrice != null">
+        ordinaryVipPrice = #{ordinaryVipPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="retailPrice != null">
+        retailPrice = #{retailPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="referencefansNo != null">
+        referencefansNo = #{referencefansNo,jdbcType=VARCHAR},
+      </if>
+      <if test="referencereadNo != null">
+        referencereadNo = #{referencereadNo,jdbcType=VARCHAR},
+      </if>
+      <if test="priceNo != null">
+        priceNo = #{priceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="zmtURL != null">
+        zmtURL = #{zmtURL,jdbcType=VARCHAR},
+      </if>
+      <if test="zmtpersonURL != null">
+        zmtpersonURL = #{zmtpersonURL,jdbcType=VARCHAR},
+      </if>
+      <if test="costPrice != null">
+        costPrice = #{costPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManName != null">
+        mediaManName =  #{mediaManName,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManPhone != null">
+        mediaManPhone =  #{mediaManPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where serial = #{serial,jdbcType=BIGINT}
+  </update>
+
+  <select id="getZmtPriceListByNos" parameterType="java.util.List" resultType="ZmtPriceList">
+  select
+  a.serial, a.zmtNo, a.zmtName, a.platformNo,b.platformName, a.industryNo,c.industryName,a.zmtURL,a.zmtpersonURL,a.districtClassNo,d.districtClassName,a.advancedPrice, a.ordinaryPrice,
+  a.ordinaryVipPrice, a.retailPrice, a.state,a.referencefansNo,e.referencefanstype, a.referencereadNo,f.referencereadtype,a.priceNo,g.priceName,a.remark,a.costPrice,a.mediaManName,a.mediaManPhone
+  from meijiezmtpricelist a
+  left join zmtindustry c on a.industryNo=c.industryNo
+  left join platform b on a.platformNo=b.platformNo
+  left join districtclass d on a.districtClassNo=d.districtClassNo
+  left join referencefans e on a.referencefansNo=e.referencefansNo
+  left join referenceread f on a.referencereadNo=f.referencereadNo
+  left join zmtpriceclassification g on a.priceNo=g.priceNo
+  where 1=1
+  <if test="list !=null and list.size()>0">
+     and a.zmtNo in
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </if>
+  </select>
+
+  <select id="getCount" resultType="Integer">
+    select count(*) from  meijiezmtpricelist a
+    where 1=1
+    <if test="platformNo !=null and platformNo.trim() != ''">
+      and a.platformNo=#{platformNo}
+    </if>
+    <if test="industryNo !=null and industryNo.trim() != ''">
+      and a.industryNo=#{industryNo}
+    </if>
+    <if test="districtClassNo !=null and districtClassNo.trim() != ''">
+      and a.districtClassNo=#{districtClassNo}
+    </if>
+    <if test="referencefansNo !=null and referencefansNo.trim() != ''">
+      and a.referencefansNo=#{referencefansNo}
+    </if>
+    <if test="referencereadNo !=null and referencereadNo.trim() != ''">
+      and a.referencereadNo=#{referencereadNo}
+    </if>
+    <if test="priceNo !=null and priceNo.trim() != ''">
+      and a.priceNo=#{priceNo}
+    </if>
+    <if test="zmtName != null and zmtName.trim() != ''">
+      AND a.zmtName LIKE concat('%',#{zmtName},'%')
+    </if>
+    <if test="state !=null and state.trim() !=''">
+      and  a.state=#{state}
+    </if>
+    <if test="sort != null and sort.trim() != ''">
+      ORDER BY a.${sort}
+    </if>
+    <if test="sort == null or sort.trim() == ''">
+      ORDER BY a.zmtName desc
+    </if>
+    <if test="order != null and order.trim() != ''">
+      ${order}
+    </if>
+  </select>
+
+  <delete id="deletePriceList" parameterType="java.util.List">
+    DELETE FROM meijiezmtpricelist WHERE zmtNo IN
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.RedMediaPriceListDao">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from meijieredmediapricelist
+    where serial = #{serial,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertRedMediaPriceList" parameterType="RedMediaPriceList">
+    insert into meijieredmediapricelist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        serial,
+      </if>
+      <if test="redMediaNo != null">
+        redMediaNo,
+      </if>
+      <if test="redMediaName != null">
+        redMediaName,
+      </if>
+      <if test="districtClassNo != null">
+        districtClassNo,
+      </if>
+      <if test="redIndustryNo != null">
+        redIndustryNo,
+      </if>
+      <if test="redIndustryName != null">
+        redIndustryName,
+      </if>
+      <if test="fansNum != null">
+        fansNum,
+      </if>
+      <if test="attention != null">
+        attention,
+      </if>
+      <if test="averagePraisePoints != null">
+        averagePraisePoints,
+      </if>
+      <if test="praisePoints != null">
+        praisePoints,
+      </if>
+      <if test="videoPrice != null">
+        videoPrice,
+      </if>
+      <if test="graphicPrice != null">
+        graphicPrice,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+      <if test="referenceFansNo != null">
+        referenceFansNo,
+      </if>
+      <if test="referencePointsNo != null">
+        referencePointsNo,
+      </if>
+      <if test="videoPriceType != null">
+        videoPriceType,
+      </if>
+      <if test="graphicPriceType != null">
+        graphicPriceType,
+      </if>
+      <if test="imgURL !=null">
+        imgURL,
+      </if>
+      <if test="costPrice != null">
+        costPrice,
+      </if>
+      <if test="mediaManName != null">
+        mediaManName,
+      </if>
+      <if test="mediaManPhone != null">
+        mediaManPhone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        #{serial,jdbcType=BIGINT},
+      </if>
+      <if test="redMediaNo != null">
+        #{redMediaNo,jdbcType=VARCHAR},
+      </if>
+      <if test="redMediaName != null">
+        #{redMediaName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtClassNo != null">
+        #{districtClassNo,jdbcType=VARCHAR},
+      </if>
+      <if test="redIndustryNo != null">
+        #{redIndustryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="redIndustryName != null">
+        #{redIndustryName,jdbcType=VARCHAR},
+      </if>
+      <if test="fansNum != null">
+        #{fansNum,jdbcType=VARCHAR},
+      </if>
+      <if test="attention != null">
+        #{attention,jdbcType=VARCHAR},
+      </if>
+      <if test="averagePraisePoints != null">
+        #{averagePraisePoints,jdbcType=VARCHAR},
+      </if>
+      <if test="praisePoints != null">
+        #{praisePoints,jdbcType=VARCHAR},
+      </if>
+      <if test="videoPrice != null">
+        #{videoPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="graphicPrice != null">
+        #{graphicPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="referenceFansNo != null">
+        #{referenceFansNo,jdbcType=VARCHAR},
+      </if>
+      <if test="referencePointsNo != null">
+        #{referencePointsNo,jdbcType=VARCHAR},
+      </if>
+      <if test="videoPriceType != null">
+        #{videoPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="graphicPriceType != null">
+        #{graphicPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="imgURL !=null">
+        #{imgURL,jdbcType=VARCHAR},
+      </if>
+      <if test="costPrice != null">
+        #{costPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManName != null">
+        #{mediaManName,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManPhone != null">
+        #{mediaManPhone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateRedMediaPriceList" parameterType="RedMediaPriceList">
+    update meijieredmediapricelist
+    <set>
+      <if test="redMediaNo != null">
+        redMediaNo = #{redMediaNo,jdbcType=VARCHAR},
+      </if>
+      <if test="redMediaName != null">
+        redMediaName = #{redMediaName,jdbcType=VARCHAR},
+      </if>
+      <if test="districtClassNo != null">
+        districtClassNo = #{districtClassNo,jdbcType=VARCHAR},
+      </if>
+      <if test="redIndustryNo != null">
+        redIndustryNo = #{redIndustryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="redIndustryName != null">
+        redIndustryName = #{redIndustryName,jdbcType=VARCHAR},
+      </if>
+      <if test="fansNum != null">
+        fansNum = #{fansNum,jdbcType=VARCHAR},
+      </if>
+      <if test="attention != null">
+        attention=#{attention,jdbcType=VARCHAR},
+      </if>
+      <if test="averagePraisePoints != null">
+        averagePraisePoints=#{averagePraisePoints,jdbcType=VARCHAR},
+      </if>
+      <if test="praisePoints != null">
+        praisePoints = #{praisePoints,jdbcType=VARCHAR},
+      </if>
+      <if test="videoPrice != null">
+        videoPrice = #{videoPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="graphicPrice != null">
+        graphicPrice = #{graphicPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="referenceFansNo != null">
+        referenceFansNo=#{referenceFansNo,jdbcType=VARCHAR},
+      </if>
+      <if test="referencePointsNo != null">
+      referencePointsNo=#{referencePointsNo,jdbcType=VARCHAR},
+      </if>
+      <if test="videoPriceType != null">
+        videoPriceType=#{videoPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="graphicPriceType != null">
+        graphicPriceType = #{graphicPriceType,jdbcType=VARCHAR},
+      </if>
+      <if test="imgURL !=null">
+        imgURL =  #{imgURL,jdbcType=VARCHAR},
+      </if>
+      <if test="costPrice != null">
+        costPrice = #{costPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManName != null">
+        mediaManName =  #{mediaManName,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaManPhone != null">
+        mediaManPhone =  #{mediaManPhone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where serial = #{serial,jdbcType=BIGINT}
+  </update>
+
+  <select id="getAllRedMediaPriceList" parameterType="RedMediaPriceList" resultType="RedMediaPriceList">
+    select a.redMediaNo,a.redMediaName,a.districtClassName,a.redIndustryNo,a.redIndustryName,a.fansNum,a.attention,
+    a.averagePraisePoints,a.praisePoints,a.videoPrice,a.graphicPrice,a.createTime,a.updateTime,
+    a.referenceFansNo,a.referencePointsNo,a.videoPriceType,a.graphicPriceType,a.imgURL,a.costPrice,a.mediaManName,a.mediaManPhone
+    from meijieredmediapricelist a
+    where 1=1
+    <if test="districtClassName !=null and districtClassName !='海外' and districtClassName.trim() != ''">
+      and a.districtClassName like concat('%',#{districtClassName},'%')
+    </if>
+    <if test="districtClassName !=null and districtClassName =='海外'">
+      and a.districtClassNo = #{districtClassName}
+    </if>
+    <if test="redIndustryNo !=null and redIndustryNo.trim() !=''">
+      and  a.redIndustryNo=#{redIndustryNo}
+    </if>
+    <if test="graphicPriceType !=null and graphicPriceType.trim() !=''">
+      and  a.graphicPriceType=#{graphicPriceType}
+    </if>
+    <if test="videoPriceType !=null and videoPriceType.trim() !=''">
+      and  a.videoPriceType=#{videoPriceType}
+    </if>
+    <if test="referencePointsNo !=null and referencePointsNo.trim() !=''">
+      and  a.referencePointsNo=#{referencePointsNo}
+    </if>
+    <if test="referenceFansNo !=null and referenceFansNo.trim() !=''">
+      and  a.referenceFansNo=#{referenceFansNo}
+    </if>
+    <if test="redMediaName !=null and redMediaName.trim() !=''">
+      and  a.redMediaName like concat('%',#{redMediaName},'%')
+    </if>
+    <if test="sort != null and sort.trim() != ''">
+      ORDER BY a.${sort}
+    </if>
+    <if test="sort == null or sort.trim() == ''">
+      ORDER BY a.redMediaName desc
+    </if>
+    <if test="order != null and order.trim() != ''">
+      ${order}
+    </if>
+    <if test="pageNo != null and pageSize != null">
+      limit #{pageNo},#{pageSize}
+    </if>
+  </select>
+
+
+  <select id="getRedMediaPriceListByNos" parameterType="java.util.List" resultType="RedMediaPriceList">
+    select a.redMediaNo,a.redMediaName,a.districtClassName,a.redIndustryNo,a.redIndustryName,a.fansNum,a.attention,a.averagePraisePoints,a.praisePoints,a.videoPrice,a.graphicPrice,a.createTime,a.updateTime,
+    a.referenceFansNo,a.referencePointsNo,a.videoPriceType,a.graphicPriceType,a.imgURL,a.costPrice,a.mediaManName,a.mediaManPhone
+    from meijieredmediapricelist a
+    where 1=1
+    <if test="list !=null">
+       and a.redMediaNo in
+      <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+          #{item}
+      </foreach>
+    </if>
+  </select>
+
+  <delete id="deleteredMediaPriceList" parameterType="java.util.List">
+    DELETE FROM meijieredmediapricelist WHERE redMediaNo IN
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

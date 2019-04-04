@@ -15,6 +15,7 @@ public interface FileDao {
     int updateFile(FileEntity fileEntity);
     List<FileEntity> checkFile(@Param("empNo")String empNo,
                                 @Param("userNo")String userNo,
+                                @Param("fileName")String fileName,
                                 @Param("FirstCreateTime") String FirstCreateTime,
                                 @Param("LastCreateTime") String LastCreateTime,
                                 @Param("fileState") String fileState,

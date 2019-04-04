@@ -232,8 +232,21 @@ public class PoiUtils {
             rowIndex++;
         }
     }
-
+    /*设置字节不得超过255*/
     private static void autoSizeColumns(Sheet sheet, int columnNumber) {
+
+        for (int i = 0; i < columnNumber; i++) {
+            int orgWidth = sheet.getColumnWidth(i);
+            sheet.autoSizeColumn(i,true);
+            int newWidth = sheet.getColumnWidth(i)+100;
+            if (newWidth > orgWidth) {
+                sheet.setColumnWidth(i,6800);/*此处用默认的宽度*/
+            } else {
+                sheet.setColumnWidth(i, orgWidth);
+            }
+        }
+    }
+   /* private static void autoSizeColumns(Sheet sheet, int columnNumber) {
 
         for (int i = 0; i < columnNumber; i++) {
             int orgWidth = sheet.getColumnWidth(i);
@@ -245,7 +258,7 @@ public class PoiUtils {
                 sheet.setColumnWidth(i, orgWidth);
             }
         }
-    }
+    }*/
 
     /**
      * @author huhy

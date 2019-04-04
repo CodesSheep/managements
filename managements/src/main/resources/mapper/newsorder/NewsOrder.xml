@@ -7,7 +7,7 @@
         left join emp e on e.empNo = u.empNo
         where 1=1
         <if test="empNo !=null and empNo !='admin' and empNo.trim() !=''">
-          and  e.empNo=#{empNo,jdbcType=VARCHAR}
+            and  e.empNo=#{empNo,jdbcType=VARCHAR}
         </if>
         order by n.createTime desc
         <if test="offset !=null and limit !=null">

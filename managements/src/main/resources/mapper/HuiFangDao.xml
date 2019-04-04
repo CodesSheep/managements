@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.HuiFangDao">
+  <insert id="insertHuiFang" parameterType="HuiFang">
+    insert into huifang
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="empNo != null">
+        empNo,
+      </if>
+      <if test="alreadyCooperate != null">
+        alreadyCooperate,
+      </if>
+      <if test="noCooperate != null">
+        noCooperate,
+      </if>
+      <if test="huiFangNumber != null">
+        huiFangNumber,
+      </if>
+      <if test="huiFangTime != null">
+        huiFangTime,
+      </if>
+      <if test="alreadyCooperateNumber != null">
+        alreadyCooperateNumber,
+      </if>
+      <if test="noCooperateNumber != null">
+        noCooperateNumber,
+      </if>
+      <if test="allCustomerNumber != null">
+        allCustomerNumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="empNo != null">
+        #{empNo,jdbcType=VARCHAR},
+      </if>
+      <if test="alreadyCooperate != null">
+        #{alreadyCooperate,jdbcType=INTEGER},
+      </if>
+      <if test="noCooperate != null">
+        #{noCooperate,jdbcType=INTEGER},
+      </if>
+      <if test="huiFangNumber != null">
+        #{huiFangNumber,jdbcType=INTEGER},
+      </if>
+      <if test="huiFangTime != null">
+        #{huiFangTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alreadyCooperateNumber != null">
+        #{alreadyCooperateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="noCooperateNumber != null">
+        #{noCooperateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="allCustomerNumber != null">
+        #{allCustomerNumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateHuiFang" parameterType="HuiFang">
+    update huifang
+    <set>
+      <if test="alreadyCooperate != null">
+        alreadyCooperate = #{alreadyCooperate,jdbcType=INTEGER},
+      </if>
+      <if test="noCooperate != null">
+        noCooperate = #{noCooperate,jdbcType=INTEGER},
+      </if>
+      <if test="huiFangNumber != null">
+        huiFangNumber = #{huiFangNumber,jdbcType=INTEGER},
+      </if>
+      <if test="huiFangTime != null">
+        huiFangTime = #{huiFangTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alreadyCooperateNumber != null">
+        alreadyCooperateNumber = #{alreadyCooperateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="noCooperateNumber != null">
+        noCooperateNumber = #{noCooperateNumber,jdbcType=INTEGER},
+      </if>
+      <if test="allCustomerNumber != null">
+        allCustomerNumber = #{allCustomerNumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    where empNo = #{empNo,jdbcType=VARCHAR} and huiFangTime  between #{FirstCreateTime} and now()
+  </update>
+
+  <select id="getAllHuiFang" resultType="HuiFang">
+    select a.empNo,b.empName,a.alreadyCooperate,a.noCooperate,a.huiFangNumber,a.huiFangTime,alreadyCooperateNumber,noCooperateNumber,allCustomerNumber
+     from huifang a
+    left join emp b on a.empNo=b.empNo
+    where 1=1
+    <if test="empNo !=null and empNo.trim() != ''">
+      and a.empNo=#{empNo}
+    </if>
+    <if test="FirstCreateTime != null and LastCreateTime != null and LastCreateTime.trim() != ''">
+      and a.huiFangTime between #{FirstCreateTime} and #{LastCreateTime}
+    </if>
+    <if test="FirstCreateTime != null and (LastCreateTime == null or LastCreateTime.trim() == '')">
+      and a.huiFangTime between #{FirstCreateTime} and now()
+    </if>
+    <if test="offset !=null and limit !=null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+
+  <select id="getCount" resultType="java.lang.Integer" >
+    select count(*) from huifang a
+    left join emp b on a.empNo=b.empNo
+    where 1=1
+    <if test="empNo !=null  and empNo.trim() != ''">
+      and a.empNo=#{empNo}
+    </if>
+    <if test="FirstCreateTime != null and LastCreateTime != null and LastCreateTime.trim() != ''">
+      and a.huiFangTime between #{FirstCreateTime} and #{LastCreateTime}
+    </if>
+    <if test="FirstCreateTime != null and (LastCreateTime == null or LastCreateTime.trim() == '')">
+      and a.huiFangTime between #{FirstCreateTime} and now()
+    </if>
+  </select>
+</mapper>

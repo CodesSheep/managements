@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.mediaPrice.PriceListDao">
+
+    <select id="listPriceList" parameterType="PriceList" resultType="PriceList">
+        SELECT p.serial,p.mediaNo,p.mediaName,p.mediaUrl,p.advancedPrice,p.ordinaryPrice,p.ordinaryVipPrice,p.retailPrice,p.entrance,
+                p.entranceZN,p.mediaTypeNo,p.advertisingTypeNo,p.industryTypeNo,p.integratedPortalNo,p.priceCategoryNo,p.districtClassNo,
+                p.newsFeedNo,p.contactInformationNo,p.createTime,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%S') cTime,p.remark,n.newsFeedName,
+                i.contactInformationName,p.mediaClassificationName,p.costPrice,p.mediaManName,p.mediaManPhone
+        FROM meijiepricelist p
+        LEFT JOIN newsFeed n ON p.newsFeedNo = n.newsFeedNo
+        LEFT JOIN contactInformation i ON p.contactInformationNo = i.contactInformationNo
+        WHERE 1 = 1
+        <if test="mediaNo != null">
+            AND p.mediaNo = #{mediaNo}
+        </if>
+        <if test="mediaTypeNo != null and mediaTypeNo.trim() != ''">
+            AND p.mediaTypeNo = #{mediaTypeNo}
+        </if>
+        <if test="advertisingTypeNo != null and advertisingTypeNo.trim() != ''">
+            AND p.advertisingTypeNo = #{advertisingTypeNo}
+        </if>
+        <if test="industryTypeNo != null and industryTypeNo.trim() != ''">
+            AND p.industryTypeNo = #{industryTypeNo}
+        </if>
+        <if test="integratedPortalNo != null and integratedPortalNo.trim() != ''">
+            AND p.integratedPortalNo = #{integratedPortalNo}
+        </if>
+        <if test="priceCategoryNo != null and priceCategoryNo.trim() != ''">
+            AND p.priceCategoryNo = #{priceCategoryNo}
+        </if>
+        <if test="districtClassNo != null and districtClassNo.trim() != ''">
+            AND p.districtClassNo = #{districtClassNo}
+        </if>
+        <if test="newsFeedNo != null and newsFeedNo.trim() != ''">
+            AND p.newsFeedNo = #{newsFeedNo}
+        </if>
+        <if test="contactInformationNo != null and contactInformationNo.trim() != ''">
+            AND p.contactInformationNo = #{contactInformationNo}
+        </if>
+        <if test="fuzzyQuery != null and fuzzyQuery.trim() != ''">
+            AND p.mediaName LIKE concat('%',#{fuzzyQuery},'%')
+        </if>
+        <if test="sort != null and sort.trim() != ''">
+            ORDER BY p.${sort}
+        </if>
+        <if test="sort == null or sort.trim() == ''">
+            order by CONVERT( p.mediaName USING gbk ) COLLATE gbk_chinese_ci desc
+        </if>
+        <if test="order != null and order.trim() != ''">
+            ${order}
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+
+    <select id="listPriceListByNos" parameterType="java.util.List" resultType="PriceList">
+        SELECT p.serial,p.mediaNo,p.mediaName,p.mediaUrl,p.advancedPrice,p.ordinaryPrice,p.ordinaryVipPrice,p.retailPrice,p.entrance,
+        p.entranceZN,p.mediaTypeNo,p.advertisingTypeNo,p.industryTypeNo,p.integratedPortalNo,p.priceCategoryNo,p.districtClassNo,
+        p.newsFeedNo,p.contactInformationNo,p.createTime,DATE_FORMAT(p.createTime,'%Y-%m-%d %H:%i:%S') cTime,p.remark,n.newsFeedName,
+        i.contactInformationName,p.mediaClassificationName,p.costPrice,p.mediaManName,p.mediaManPhone
+        FROM meijiepricelist p
+        LEFT JOIN newsFeed n ON p.newsFeedNo = n.newsFeedNo
+        LEFT JOIN contactInformation i ON p.contactInformationNo = i.contactInformationNo
+        WHERE 1 = 1
+        <if test="list != null and list.size() > 0">
+            and p.mediaNo in
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <insert id="insertPriceList" parameterType="PriceList">
+        INSERT INTO meijiepricelist
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="mediaNo != null" >
+                mediaNo,
+            </if>
+            <if test="mediaName != null" >
+                mediaName,
+            </if>
+            <if test="mediaUrl != null" >
+                mediaUrl,
+            </if>
+            <if test="advancedPrice != null" >
+                advancedPrice,
+            </if>
+            <if test="ordinaryPrice != null" >
+                ordinaryPrice,
+            </if>
+            <if test="ordinaryVipPrice != null" >
+                ordinaryVipPrice,
+            </if>
+            <if test="retailPrice != null" >
+                retailPrice,
+            </if>
+            <if test="entrance != null" >
+                entrance,
+            </if>
+            <if test="entranceZN != null" >
+                entranceZN,
+            </if>
+            <if test="mediaTypeNo != null" >
+                mediaTypeNo,
+            </if>
+            <if test="advertisingTypeNo != null" >
+                advertisingTypeNo,
+            </if>
+            <if test="industryTypeNo != null" >
+                industryTypeNo,
+            </if>
+            <if test="integratedPortalNo != null" >
+                integratedPortalNo,
+            </if>
+            <if test="priceCategoryNo != null" >
+                priceCategoryNo,
+            </if>
+            <if test="districtClassNo != null" >
+                districtClassNo,
+            </if>
+            <if test="newsFeedNo != null" >
+                newsFeedNo,
+            </if>
+            <if test="contactInformationNo != null" >
+                contactInformationNo,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="mediaClassificationName != null" >
+                mediaClassificationName,
+            </if>
+            <if test="costPrice != null">
+                costPrice,
+            </if>
+            <if test="mediaManName != null">
+                mediaManName,
+            </if>
+            <if test="mediaManPhone != null">
+                mediaManPhone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="mediaNo != null" >
+                #{mediaNo,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaName != null" >
+                #{mediaName,jdbcType=NVARCHAR},
+            </if>
+            <if test="mediaUrl != null" >
+                #{mediaUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="advancedPrice != null" >
+                #{advancedPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="ordinaryPrice != null" >
+                #{ordinaryPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="ordinaryVipPrice != null" >
+                #{ordinaryVipPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="retailPrice != null" >
+                #{retailPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="entrance != null" >
+                #{entrance,jdbcType=INTEGER},
+            </if>
+            <if test="entranceZN != null" >
+                #{entranceZN,jdbcType=NVARCHAR},
+            </if>
+            <if test="mediaTypeNo != null" >
+                #{mediaTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="advertisingTypeNo != null" >
+                #{advertisingTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="industryTypeNo != null" >
+                #{industryTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="integratedPortalNo != null" >
+                #{integratedPortalNo,jdbcType=VARCHAR},
+            </if>
+            <if test="priceCategoryNo != null" >
+                #{priceCategoryNo,jdbcType=VARCHAR},
+            </if>
+            <if test="districtClassNo != null" >
+                #{districtClassNo,jdbcType=VARCHAR},
+            </if>
+            <if test="newsFeedNo != null" >
+                #{newsFeedNo,jdbcType=VARCHAR},
+            </if>
+            <if test="contactInformationNo != null" >
+                #{contactInformationNo,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                #{remark,jdbcType=NVARCHAR},
+            </if>
+            <if test="mediaClassificationName != null" >
+                #{mediaClassificationName,jdbcType=NVARCHAR},
+            </if>
+            <if test="costPrice != null">
+                #{costPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaManName != null">
+                #{mediaManName,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaManPhone != null">
+                #{mediaManPhone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updatePriceList" parameterType="PriceList">
+        UPDATE meijiepricelist
+        <set >
+            <if test="mediaName != null" >
+                mediaName = #{mediaName,jdbcType=NVARCHAR},
+            </if>
+            <if test="mediaUrl != null" >
+                mediaUrl = #{mediaUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="advancedPrice != null" >
+                advancedPrice = #{advancedPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="ordinaryPrice != null" >
+                ordinaryPrice = #{ordinaryPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="ordinaryVipPrice != null" >
+                ordinaryVipPrice = #{ordinaryVipPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="retailPrice != null" >
+                retailPrice = #{retailPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="entrance != null" >
+                entrance = #{entrance,jdbcType=INTEGER},
+            </if>
+            <if test="entranceZN != null" >
+                entranceZN = #{entranceZN,jdbcType=NVARCHAR},
+            </if>
+            <if test="mediaTypeNo != null" >
+                mediaTypeNo = #{mediaTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="advertisingTypeNo != null" >
+                advertisingTypeNo = #{advertisingTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="industryTypeNo != null" >
+                industryTypeNo = #{industryTypeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="integratedPortalNo != null" >
+                integratedPortalNo = #{integratedPortalNo,jdbcType=VARCHAR},
+            </if>
+            <if test="priceCategoryNo != null" >
+                priceCategoryNo = #{priceCategoryNo,jdbcType=VARCHAR},
+            </if>
+            <if test="districtClassNo != null" >
+                districtClassNo = #{districtClassNo,jdbcType=VARCHAR},
+            </if>
+            <if test="newsFeedNo != null" >
+                newsFeedNo = #{newsFeedNo,jdbcType=VARCHAR},
+            </if>
+            <if test="contactInformationNo != null" >
+                contactInformationNo = #{contactInformationNo,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=NVARCHAR},
+            </if>
+            <if test="mediaClassificationName != null" >
+                mediaClassificationName = #{mediaClassificationName,jdbcType=NVARCHAR},
+            </if>
+            <if test="costPrice != null">
+                costPrice = #{costPrice,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaManName != null">
+                mediaManName =  #{mediaManName,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaManPhone != null">
+                mediaManPhone =  #{mediaManPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE mediaNo = #{mediaNo,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deletePriceList" parameterType="java.util.List">
+        DELETE FROM meijiepricelist WHERE mediaNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <update id="updateSellingPrice" parameterType="PriceList">
+        update meijiepricelist
+        <set>
+            <if test="mediaUrl != null" >
+                mediaUrl = #{mediaUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="advancedPrice != null">
+                advancedPrice=#{advancedPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="ordinaryPrice != null">
+                ordinaryPrice=#{ordinaryPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="ordinaryVipPrice != null">
+                ordinaryVipPrice=#{ordinaryVipPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="ordinaryVipPrice != null">
+                retailPrice=#{retailPrice,jdbcType=NUMERIC},
+            </if>
+            <if test="costPrice != null">
+                costPrice = #{costPrice,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where mediaNo = #{mediaNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getCount"  parameterType="PriceList" resultType="java.lang.Integer">
+        select count(*) from meijiepricelist p
+        where 1 = 1
+        <if test="mediaNo != null">
+            AND p.mediaNo = #{mediaNo}
+        </if>
+        <if test="mediaTypeNo != null and mediaTypeNo.trim() != ''">
+            AND p.mediaTypeNo = #{mediaTypeNo}
+        </if>
+        <if test="advertisingTypeNo != null and advertisingTypeNo.trim() != ''">
+            AND p.advertisingTypeNo = #{advertisingTypeNo}
+        </if>
+        <if test="industryTypeNo != null and industryTypeNo.trim() != ''">
+            AND p.industryTypeNo = #{industryTypeNo}
+        </if>
+        <if test="integratedPortalNo != null and integratedPortalNo.trim() != ''">
+            AND p.integratedPortalNo = #{integratedPortalNo}
+        </if>
+        <if test="priceCategoryNo != null and priceCategoryNo.trim() != ''">
+            AND p.priceCategoryNo = #{priceCategoryNo}
+        </if>
+        <if test="districtClassNo != null and districtClassNo.trim() != ''">
+            AND p.districtClassNo = #{districtClassNo}
+        </if>
+        <if test="newsFeedNo != null and newsFeedNo.trim() != ''">
+            AND p.newsFeedNo = #{newsFeedNo}
+        </if>
+        <if test="contactInformationNo != null and contactInformationNo.trim() != ''">
+            AND p.contactInformationNo = #{contactInformationNo}
+        </if>
+        <if test="fuzzyQuery != null and fuzzyQuery.trim() != ''">
+            AND p.mediaName LIKE concat('%',#{fuzzyQuery},'%')
+        </if>
+        <if test="sort != null and sort.trim() != ''">
+            ORDER BY p.${sort}
+        </if>
+        <if test="sort == null or sort.trim() == ''">
+            order by CONVERT( p.mediaName USING gbk ) COLLATE gbk_chinese_ci desc
+        </if>
+        <if test="order != null and order.trim() != ''">
+            ${order}
+        </if>
+        <!--<if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>-->
+    </select>
+
+</mapper>

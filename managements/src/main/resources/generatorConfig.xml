@@ -6,7 +6,7 @@
 <generatorConfiguration>
 
     <!--指定特定数据库的jdbc驱动jar包的位置-->
-    <classPathEntry location="D:\Program Files\apache-maven-3.3.9\repository\mysql\mysql-connector-java\5.1.46\mysql-connector-java-5.1.46.jar"/>
+    <classPathEntry location="D:\apache-maven-3.5.0\repository\mysql\mysql-connector-java-5.1.46.jar"/>
 
     <context id="default" targetRuntime="MyBatis3">
 
@@ -35,7 +35,7 @@
             targetPackage     指定生成的model生成所在的包名
             targetProject     指定在该项目下所在的路径
         -->
-        <javaModelGenerator targetPackage="com.lzq.managements.entity.EmpEntity"
+        <javaModelGenerator targetPackage="com.lzq.managements.entity"
                             targetProject="src/main/java">
 
             <!-- 是否允许子包，即targetPackage.schemaName.tableName -->
@@ -49,7 +49,7 @@
         </javaModelGenerator>
 
         <!--Mapper映射文件生成所在的目录 为每一个数据库的表生成对应的SqlMap文件 -->
-        <sqlMapGenerator targetPackage="mapper.emp"
+        <sqlMapGenerator targetPackage="mapper"
                          targetProject="src/main/resources">
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
@@ -59,7 +59,7 @@
                 type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
                 type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
         -->
-        <javaClientGenerator targetPackage="com.lzq.managements.dao.EmpEntity"
+        <javaClientGenerator targetPackage="com.lzq.managements.dao"
                              targetProject="src/main/java" type="XMLMAPPER" >
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
@@ -67,10 +67,11 @@
 
         <!-- 指定数据库表 -->
 
-         <table tableName="emp" domainObjectName="EmpEntity"
+         <table tableName="huifang" domainObjectName="HuiFang"
                 enableCountByExample="false" enableUpdateByExample="false"
                 enableDeleteByExample="false" enableSelectByExample="false"
-                selectByExampleQueryId="false" mapperName="EmpDao" >
+                selectByExampleQueryId="false" mapperName="HuiFangDao" >
+             <property name="useActualColumnNames" value="true"/>
          </table>
          <!--<table tableName="mblog_peice_classification" domainObjectName="MblogPeiceClassification"
                 enableCountByExample="false" enableUpdateByExample="false"

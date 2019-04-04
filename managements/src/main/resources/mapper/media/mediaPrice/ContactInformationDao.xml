@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.media.mediaPrice.ContactInformationDao">
+
+    <select id="listContactInformation" resultType="ContactInformation">
+        SELECT serial,contactInformationNo,contactInformationName,createTime,DATE_FORMAT(createTime,'%Y-%m-%d %H:%i:%S') cTime
+        FROM contactInformation ORDER BY contactInformationName
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="insertContactInformation" parameterType="ContactInformation">
+        INSERT INTO contactInformation
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="contactInformationNo != null" >
+                contactInformationNo,
+            </if>
+            <if test="contactInformationName != null" >
+                contactInformationName,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="contactInformationNo != null" >
+                #{contactInformationNo,jdbcType=VARCHAR},
+            </if>
+            <if test="contactInformationName != null" >
+                #{contactInformationName,jdbcType=NVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteContactInformation" parameterType="java.util.List">
+        DELETE FROM contactInformation WHERE contactInformationNo IN
+        <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

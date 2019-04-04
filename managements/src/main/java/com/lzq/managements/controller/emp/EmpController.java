@@ -7,6 +7,8 @@ import com.lzq.managements.entity.emp.EmpEntity;
 import com.lzq.managements.service.emp.EmpService;
 import com.lzq.managements.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +24,7 @@ public class EmpController {
     private EmpService empService;
 
     @RequestMapping("getAllEmp")
+    @Cacheable(value = "emp",keyGenerator = "keyGenerator")
     public String getAllEmp(String empNo,Integer offset,Integer limit){
         JSONObject json=new JSONObject();
         try {
@@ -36,6 +39,7 @@ public class EmpController {
         }
     }
     @RequestMapping("updateEmp")
+    @CacheEvict(value = "emp",allEntries = true)
     public String updateEmp(EmpEntity empEntity){
         JSONObject json=new JSONObject();
         try{
@@ -72,6 +76,7 @@ public class EmpController {
 
 
     @RequestMapping("insertEmp")
+    @CacheEvict(value = "emp",allEntries = true)
     public String insertEmp(EmpEntity empEntity){
         JSONObject json=new JSONObject();
         try{
@@ -110,6 +115,7 @@ public class EmpController {
     }
 
     @RequestMapping("loginByEmpNo")
+    @Cacheable(value = "emp",keyGenerator = "keyGenerator")
     public String loginByEmpNo(String empNo, String empPassword, HttpServletRequest request){
         JSONObject json =new JSONObject();
         try{
@@ -186,6 +192,7 @@ public class EmpController {
     }
 
     @RequestMapping("selectEmpByleaderName")
+    @Cacheable(value = "emp",keyGenerator = "keyGenerator")
     public String selectEmpByleaderName(String leaderName,String empNo){
     JSONObject json = new JSONObject();
     try{

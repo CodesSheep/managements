@@ -12,4 +12,6 @@ public interface FeedbackDao {
     int updateFeedback(Feedback feedback);
     List<Feedback> getAllFeedbackByUserNo(@Param("userNo") String userNo);
     Feedback selectFeedbackBycreateTime(@Param("userNo") String userNo);
+    String  findEmpByEmpNo(String empNo);
+    int deleteFeedback(@Param("userNo")String userNo);
 }

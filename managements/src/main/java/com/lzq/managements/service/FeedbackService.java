@@ -10,5 +10,6 @@ public interface FeedbackService {
     int updateFeedback(Feedback feedback);
     List<Feedback> getAllFeedbackByUserNo( String userNo);
     Feedback selectFeedbackBycreateTime(String userNo);
-
+    String  findEmpByEmpNo(String empNo);
+    int deleteFeedback(String userNo);
 }
