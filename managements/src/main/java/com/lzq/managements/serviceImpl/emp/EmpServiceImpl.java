@@ -21,6 +21,11 @@ public class EmpServiceImpl implements EmpService {
     }
 
     @Override
+    public int getCount(String empNo) {
+        return empDao.getCount(empNo);
+    }
+
+    @Override
     public int insertEmp(EmpEntity empEntity) {
         return empDao.insertEmp(empEntity);
     }
@@ -57,8 +62,8 @@ public class EmpServiceImpl implements EmpService {
     }
 
     @Override
-    public List<EmpEntity> selectEmpByleaderName(String leaderName,String empNo) {
-        return empDao.selectEmpByleaderName(leaderName,empNo);
+    public List<EmpEntity> selectEmpByleaderName(String jurisdictionName) {
+        return empDao.selectEmpByleaderName(jurisdictionName);
     }
 
     @Override

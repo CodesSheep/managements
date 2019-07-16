@@ -87,4 +87,44 @@ public class UserInfoServiceImpl implements UserInfoService {
     public int getLocking(String empNo) {
         return userDao.getLocking(empNo);
     }
+
+    @Override
+    public int getAllUserInfoCount(String empNo) {
+        return userDao.getAllUserInfoCount(empNo);
+    }
+
+    @Override
+    public int getAllDiscardCount() {
+        return userDao.getAllDiscardCount();
+    }
+
+    @Override
+    public int getAllUserInfoByloginTimeCount(String empNo, String Time) {
+        return userDao.getAllUserInfoByloginTimeCount(empNo,Time);
+    }
+
+    @Override
+    public int checkUserinfoCount(String empNo, String userNo, String FirstCreateTime, String LastCreateTime, Integer status, String qqAccount, String state) {
+        return userDao.checkUserinfoCount(empNo, userNo, FirstCreateTime,LastCreateTime,status,qqAccount,state);
+    }
+
+    @Override
+    public int checkDiscardCount(String empNo, String userNo, String FirstCreateTime, String LastCreateTime, Integer status, String qqAccount, String state) {
+        return userDao.checkDiscardCount(empNo, userNo, FirstCreateTime,LastCreateTime,status,qqAccount,state);
+    }
+
+    @Override
+    public int checkUserinfoByLoginTimeCount(String empNo, String userNo, String Time, Integer status, String qqAccount, String state) {
+        return userDao.checkUserinfoByLoginTimeCount(empNo, userNo,Time,status,qqAccount,state);
+    }
+
+    @Override
+    public int updateTimerToNow(String articleNo) {
+        return userDao.updateTimerToNow(articleNo);
+    }
+
+    @Override
+    public String selectArticleNo() {
+        return userDao.selectArticleNo();
+    }
 }

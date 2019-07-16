@@ -21,4 +21,19 @@ public interface UserInfoService {
     List<UserInfo> checkUserinfoByLoginTime(String empNo,String userNo,String Time,Integer status,String qqAccount,String state,Integer offset,Integer limit);
     List<UserInfo> getUpdateTime();
     int getLocking(String empNo);
+
+    int getAllUserInfoCount(String empNo);
+
+    int getAllDiscardCount();
+
+    int getAllUserInfoByloginTimeCount(String empNo,String Time);
+    int checkUserinfoCount(String empNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state);
+
+    int checkDiscardCount(String empNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state);
+
+    int checkUserinfoByLoginTimeCount(String empNo,String userNo,String Time,Integer status,String qqAccount,String state);
+
+    int updateTimerToNow(String articleNo);
+
+    String selectArticleNo();
 }

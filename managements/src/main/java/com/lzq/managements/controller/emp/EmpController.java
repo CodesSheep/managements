@@ -29,7 +29,7 @@ public class EmpController {
         JSONObject json=new JSONObject();
         try {
             List<EmpEntity> list =empService.getAllEmp(empNo,offset,limit);
-            int total=empService.getAllEmp(empNo,null,null).size();
+            int total=empService.getCount(empNo);
             json.put("rows",list);
             json.put("total",total);
            return JSON.toJSONStringWithDateFormat(json,"yy-MM-dd HH:mm:ss");
@@ -44,25 +44,6 @@ public class EmpController {
         JSONObject json=new JSONObject();
         try{
             empService.updateEmp(empEntity);
-            if(empEntity.getTeamNo()!=null){
-                Team team=new Team();
-                if(empEntity.getTeamNo()=="1")
-                {
-                    team.setTeamName("主管");
-                }
-                if(empEntity.getTeamNo()=="2")
-                {
-                    team.setTeamName("组长");
-                }
-                if(empEntity.getTeamNo()=="3")
-                {
-                    team.setTeamName("普通员工");
-                }
-                team.setTeamNo(empEntity.getTeamNo());
-                team.setLeaderName(empEntity.getEmpName());
-                empService.updateTeam(team);
-            }
-
             json.put("result",true);
             json.put("message","修改成功！");
             return JSON.toJSONString(json);
@@ -96,11 +77,7 @@ public class EmpController {
                 json.put("message","请输入密码");
                 return JSON.toJSONString(json);
             }
-            Team team=new Team();
-            team.setTeamNo("3");
-            team.setTeamName("普通员工");
-            team.setLeaderName("管理员");
-            empService.insertTeam(team);
+
             empEntity.setTeamNo("3");
             empService.insertEmp(empEntity);
             json.put("result",true);
@@ -193,10 +170,10 @@ public class EmpController {
 
     @RequestMapping("selectEmpByleaderName")
     @Cacheable(value = "emp",keyGenerator = "keyGenerator")
-    public String selectEmpByleaderName(String leaderName,String empNo){
+    public String selectEmpByleaderName(String jurisdictionName){
     JSONObject json = new JSONObject();
     try{
-        List<EmpEntity> ar= empService.selectEmpByleaderName(leaderName,empNo);
+        List<EmpEntity> ar= empService.selectEmpByleaderName(jurisdictionName);
         json.put("ar",ar);
         return JSON.toJSONString(json);
     }catch (Exception e){

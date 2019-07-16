@@ -14,7 +14,6 @@
         <if test="offset !=null and limit !=null">
             limit #{offset},#{limit}
         </if>
-
     </select>
 
     <select id="checkFile" resultType="FileEntity">
@@ -45,5 +44,32 @@
         <if test="offset !=null and limit !=null">
             limit #{offset},#{limit}
         </if>
+    </select>
+
+    <select id="checkCount" resultType="Integer">
+        select count(*)
+        from file f
+        left join userinfo u on f.userNo= u.userNo
+        left join emp e on e.empNo=u.empNo
+        where 1=1
+        <if test="empNo !=null and empNo !='admin' and empNo.trim() !=''">
+            and  e.empNo=#{empNo,jdbcType=VARCHAR}
+        </if>
+        <if test="fileName !=null and fileName.trim() !=''">
+            and  f.fileName like concat('%',#{fileName},'%')
+        </if>
+        <if test="userNo !=null and userNo.trim() !=''">
+            and u.userNo=#{userNo,jdbcType=VARCHAR}
+        </if>
+        <if test="FirstCreateTime != null  and LastCreateTime != null and LastCreateTime.trim() != ''">
+            and f.createTime between #{FirstCreateTime} and #{LastCreateTime}
+        </if>
+        <if test="FirstCreateTime != null and FirstCreateTime.trim() != '' and (LastCreateTime == null or LastCreateTime.trim() == '')">
+            and f.createTime between #{FirstCreateTime} and now()
+        </if>
+        <if test="fileState !=null and fileState.trim() !=''">
+            and f.fileState=#{fileState,jdbcType=VARCHAR}
+        </if>
+        order by f.createTime desc
     </select>
 </mapper>

@@ -32,4 +32,9 @@ public class FileServiceImpl implements FileService {
     public List<FileEntity> checkFile(String empNo, String userNo, String fileName,String FirstCreateTime, String LastCreateTime, String fileState, Integer offset, Integer limit) {
         return fileDao.checkFile(empNo,userNo,fileName,FirstCreateTime,LastCreateTime,fileState,offset,limit);
     }
+
+    @Override
+    public int checkCount(String empNo, String userNo, String fileName, String FirstCreateTime, String LastCreateTime, String fileState) {
+        return fileDao.checkCount(empNo,userNo,fileName,FirstCreateTime,LastCreateTime,fileState);
+    }
 }

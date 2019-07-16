@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface EmpService {
     List<EmpEntity> getAllEmp(String empNo,Integer offset, Integer limit);
+    int getCount(String empNo);
     int insertEmp(EmpEntity empEntity);
     int updateEmp(EmpEntity empEntity);
     int deleteEmp(String[] serial);
@@ -15,6 +16,6 @@ public interface EmpService {
     EmpEntity findEmpByEmpNo(String empNo);
     int insertTeam(Team team);
     int updateTeam(Team team);
-    List<EmpEntity> selectEmpByleaderName(String leaderName,String empNo);
+    List<EmpEntity> selectEmpByleaderName(String jurisdictionName);
     String selectEmpByempName(String empName);
 }

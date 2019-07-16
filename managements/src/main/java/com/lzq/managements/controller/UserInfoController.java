@@ -17,6 +17,7 @@ import com.lzq.managements.util.StringUtils;
 import javafx.scene.control.Tab;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,11 +43,12 @@ public class UserInfoController {
     private HuiFangService huiFangService;
 
     @RequestMapping("getAllUserInfo")
+    @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
     public String getAllUserInfo(String empNo,Integer offset,Integer limit){
         JSONObject json=new JSONObject();
         try {
             List<UserInfo> list = userInfoService.getAllUserInfo( empNo,offset, limit);
-            int total = userInfoService.getAllUserInfo(empNo,null, null).size();
+            int total = userInfoService.getAllUserInfoCount(empNo);
             json.put("rows", list);
             json.put("total", total);
             return JSON.toJSONStringWithDateFormat(json, "yyyy-MM-dd HH:mm:ss", SerializerFeature.WriteMapNullValue);
@@ -56,7 +58,8 @@ public class UserInfoController {
         }
     }
     @RequestMapping("getOneByUserNo")
-    public String getOneByUserNo(String userNo,String leaderName,String empNo){
+    @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
+    public String getOneByUserNo(String userNo,String jurisdictionName){
         JSONObject json=new JSONObject();
         try{
             List<UserInfo> ars=userInfoService.getOne(userNo);
@@ -66,7 +69,7 @@ public class UserInfoController {
                 userInfo.setLocking("0");
                 userInfoService.insertUserinfo(userInfo);
             }
-            List<EmpEntity> ar= empService.selectEmpByleaderName(leaderName,empNo);
+            List<EmpEntity> ar= empService.selectEmpByleaderName(jurisdictionName);
             List<Feedback> list=feedbackService.getAllFeedbackByUserNo(userNo);
             json.put("ar",ar);
             json.put("list",list);
@@ -79,11 +82,12 @@ public class UserInfoController {
 
 
     @RequestMapping("getAllUserInfoByloginTime")
+    @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
     public String getAllUserInfoByloginTime(String empNo,String Time, Integer offset,Integer limit){
         JSONObject json=new JSONObject();
         try {
             List<UserInfo> list = userInfoService.getAllUserInfoByloginTime(empNo,Time,offset, limit);
-            int total = userInfoService.getAllUserInfoByloginTime(empNo,Time,null, null).size();
+            int total = userInfoService.getAllUserInfoByloginTimeCount(empNo,Time);
             json.put("rows", list);
             json.put("total", total);
             return JSON.toJSONStringWithDateFormat(json, "yy-MM-dd HH:mm:ss", SerializerFeature.WriteMapNullValue);
@@ -94,6 +98,7 @@ public class UserInfoController {
     }
 
     @RequestMapping("updateUserInfo")
+    @CacheEvict(value = "userinfo", allEntries = true)
     public String updateUserInfo(UserInfo userInfo){
         JSONObject json =new JSONObject();
         try{
@@ -108,10 +113,10 @@ public class UserInfoController {
                 insert(empNo,userInfo.getUserNo());
 
                 userInfoService.updateUser(userInfo);
-                if(userInfo.getDiscard().equals("1")){
-                    feedbackService.deleteFeedback(userInfo.getUserNo());
+                /*if(userInfo.getDiscard().equals("1")){
+                   *//* feedbackService.deleteFeedback(userInfo.getUserNo());*//*
                     userInfo.setFeedback("调库");
-                }
+                }*/
                 userInfoService.updateUserinfo(userInfo);
             }
             else{
@@ -122,10 +127,10 @@ public class UserInfoController {
 
                 userInfoService.updateUser(userInfo);
 
-                if(userInfo.getDiscard().equals("1")){
-                    feedbackService.deleteFeedback(userInfo.getUserNo());
+                /*if(userInfo.getDiscard().equals("1")){
+                    *//*feedbackService.deleteFeedback(userInfo.getUserNo());*//*
                     userInfo.setFeedback("调库");
-                }
+                }*/
                 userInfoService.updateUserinfo(userInfo);
             }
             json.put("result",true);
@@ -139,11 +144,12 @@ public class UserInfoController {
         }
     }
     @RequestMapping("getAllDiscard")
+    @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
     public String getAllDiscard(Integer offset,Integer limit){
         JSONObject json=new JSONObject();
         try{
             List<UserInfo> list = userInfoService.getAllDiscard( offset, limit);
-            int total = userInfoService.getAllDiscard(null, null).size();
+            int total = userInfoService.getAllDiscardCount();
             json.put("rows", list);
             json.put("total", total);
             return JSON.toJSONStringWithDateFormat(json, "yyyy-MM-dd HH:mm:ss");
@@ -156,16 +162,16 @@ public class UserInfoController {
     }
 
     @RequestMapping("checkUserinfo")
+    @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
     public String checkUserinfo(String empNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit){
             JSONObject json=new JSONObject();
             try{
-/*
                 if (FirstCreateTime == null || FirstCreateTime.trim() == "") {
                     FirstCreateTime = "2018-8-30 00:00:00";
 
-                }*/
+                }
                 List<UserInfo> list=userInfoService.checkUserinfo(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
-                int total=userInfoService.checkUserinfo(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, null, null).size();
+                int total=userInfoService.checkUserinfoCount(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state);
 
                 json.put("rows",list);
                 json.put("total",total);
@@ -177,11 +183,16 @@ public class UserInfoController {
     }
 
     @RequestMapping("checkDiscard")
+    @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
     public String checkDiscard(String empNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit){
         JSONObject json=new JSONObject();
         try{
+            if (FirstCreateTime == null || FirstCreateTime.trim() == "") {
+                FirstCreateTime = "2018-8-30 00:00:00";
+
+            }
             List<UserInfo> list=userInfoService.checkDiscard(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
-            int total=userInfoService.checkDiscard(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, null, null).size();
+            int total=userInfoService.checkDiscardCount(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state);
 
             json.put("rows",list);
             json.put("total",total);
@@ -194,11 +205,12 @@ public class UserInfoController {
 
 
     @RequestMapping("checkUserinfoByLoginTime")
+    @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
     public String checkUserinfoByLoginTime(String empNo,String userNo,String Time,Integer status,String qqAccount,String state,Integer offset,Integer limit){
         JSONObject json=new JSONObject();
         try{
             List<UserInfo> list=userInfoService.checkUserinfoByLoginTime(empNo,userNo,Time,status,qqAccount, state, offset, limit);
-            int total=userInfoService.checkUserinfoByLoginTime(empNo,userNo,Time, status,qqAccount, state, null, null).size();
+            int total=userInfoService.checkUserinfoByLoginTimeCount(empNo,userNo,Time, status,qqAccount, state);
 
             json.put("rows",list);
             json.put("total",total);
@@ -210,6 +222,7 @@ public class UserInfoController {
     }
 
     @RequestMapping("userInfoDistribution")
+    @CacheEvict(value = "userinfo", allEntries = true)
     public String userInfoDistribution(String[] userNo,String empNo,String discard){
         JSONObject json=new JSONObject();
         try{
@@ -225,10 +238,10 @@ public class UserInfoController {
                     userInfo.setDiscard(discard);
                     userInfo.setAdjustTime(new Date());
 
-                    if(discard.equals("1")){
-                        feedbackService.deleteFeedback(userNo[i]);
+                    /*if(discard.equals("1")){
+                        *//*feedbackService.deleteFeedback(userNo[i]);*//*
                         userInfo.setFeedback("调库");
-                    }
+                    }*/
                     userInfoService.updateUserinfo(userInfo);
                 }else {
                     userInfo.setUserNo(userNo[i]);
@@ -237,10 +250,10 @@ public class UserInfoController {
                     userInfo.setLocking("0");
                     userInfo.setRemark(" ");
                     userInfo.setAdjustTime(new Date());
-                    if(discard.equals("1")){
-                        feedbackService.deleteFeedback(userNo[i]);
+                    /*if(discard.equals("1")){
+                       *//* feedbackService.deleteFeedback(userNo[i]);*//*
                         userInfo.setFeedback("调库");
-                    }
+                    }*/
                     userInfoService.updateUserinfo(userInfo);
                 }
             }
@@ -257,6 +270,7 @@ public class UserInfoController {
     }
 
     @RequestMapping("insertUser")
+    @CacheEvict(value = "userinfo", allEntries = true)
     public String insertUser(User user){
         JSONObject json = new JSONObject();
         try {
@@ -308,6 +322,25 @@ public class UserInfoController {
         }
     }
 
+    @RequestMapping("timerToNow")
+    public String timerToNow(String articleNo){
+        JSONObject json = new JSONObject();
+        try {
+
+            userInfoService.updateTimerToNow(articleNo);
+
+            json.put("result",true);
+            json.put("message","修改成功");
+            return JSON.toJSONString(json);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            json.put("result",false);
+            json.put("message","修改失败");
+            return JSON.toJSONString(json);
+        }
+    }
 
 
         /**每分钟启动
@@ -317,23 +350,26 @@ public class UserInfoController {
         @Scheduled(cron = "0 37 9,19 * * ?")
         //@Scheduled(cron = "0 0/1 *  * * ?")
         public void timerToNow(){
-            List<UserInfo> oldTime=userInfoService.getUpdateTime();
-            for (int i = 0; i < oldTime.size(); i++) {
-                Date state =oldTime.get(i).getUpdateTime();
-                Date end  =new Date();
-                long stateTimeLong = state.getTime();
-                long endTimeLong = end.getTime();
-                long day = (endTimeLong-stateTimeLong)/(24*60*60*1000);
-                if (day>30){
-                    UserInfo userInfo=new UserInfo();
-                    userInfo.setUserNo(oldTime.get(i).getUserNo());
-                    userInfo.setDiscard("1");
-                    userInfo.setFeedback("超时自动调库");
-                    userInfo.setAdjustTime(new Date());
-                    feedbackService.deleteFeedback(oldTime.get(i).getUserNo());
-                    userInfoService.updateUserinfo(userInfo);
-                   //* System.out.println("now time:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-                }
+            String total=userInfoService.selectArticleNo();
+            if(total.equals("1")){
+                List<UserInfo> oldTime=userInfoService.getUpdateTime();
+                for (int i = 0; i < oldTime.size(); i++) {
+                    Date state =oldTime.get(i).getUpdateTime();
+                    Date end  =new Date();
+                    long stateTimeLong = state.getTime();
+                    long endTimeLong = end.getTime();
+                    long day = (endTimeLong-stateTimeLong)/(24*60*60*1000);
+                    if (day>30){
+                        UserInfo userInfo=new UserInfo();
+                        userInfo.setUserNo(oldTime.get(i).getUserNo());
+                        userInfo.setDiscard("1");
+                        userInfo.setFeedback("超时自动调库");
+                        userInfo.setAdjustTime(new Date());
+                        /*feedbackService.deleteFeedback(oldTime.get(i).getUserNo());*/
+                        userInfoService.updateUserinfo(userInfo);
+                        //* System.out.println("now time:" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                    }
+              }
             }
         }
 
@@ -433,16 +469,6 @@ public class UserInfoController {
                 huiFangService.updateHuiFang(huiFang);
 
         }
-
-    }
-    @RequestMapping("test")
-    public String delete(String userNo,String empNo){
-        JSONObject json=new JSONObject();
-        List<HuiFang> ar=huiFangService.getAllHuiFang(empNo,null,null,null,null);
-
-        json.put("rows",ar);
-
-        return JSON.toJSONString(json);
 
     }
 

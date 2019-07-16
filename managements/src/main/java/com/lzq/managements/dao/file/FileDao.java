@@ -21,4 +21,10 @@ public interface FileDao {
                                 @Param("fileState") String fileState,
                                 @Param("offset") Integer offset,
                                 @Param("limit") Integer limit);
+     int checkCount(@Param("empNo")String empNo,
+                               @Param("userNo")String userNo,
+                               @Param("fileName")String fileName,
+                               @Param("FirstCreateTime") String FirstCreateTime,
+                               @Param("LastCreateTime") String LastCreateTime,
+                               @Param("fileState") String fileState);
 }

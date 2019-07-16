@@ -2,14 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lzq.managements.dao.emp.EmpDao">
     <select id="getAllEmp" resultType="EmpEntity">
-        select a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,b.teamNo,b.leaderName
-        from emp a left join team b on a.serial=b.serial
+        select a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.teamNo,a.jurisdictionName
+        from emp a
         where 1=1
+        <if test="empNo !=null">
+          and  empNo =#{empNo}
+        </if>
         order by a.createTime desc
         <if test="offset !=null and limit !=null">
             limit #{offset},#{limit}
         </if>
     </select>
+
+    <select id="getCount" resultType="Integer">
+        select count(*)
+        from emp a
+        where 1=1
+        <if test="empNo !=null">
+            and  empNo =#{empNo}
+        </if>
+        order by a.createTime desc
+    </select>
+
+
+
+
     <insert id="insertEmp" parameterType="EmpEntity">
         insert into emp
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -31,6 +48,9 @@
             <if test="teamNo !=null">
                 teamNo,
             </if>
+            <if test="jurisdictionName !=null">
+                jurisdictionName,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="empNo !=null">
@@ -50,6 +70,9 @@
             </if>
             <if test="teamNo !=null">
                 #{teamNo,jdbcType=VARCHAR},
+            </if>
+            <if test="jurisdictionName !=null">
+                #{jurisdictionName,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -72,7 +95,9 @@
             <if test="teamNo !=null">
                 teamNo=#{teamNo,JdbcType=VARCHAR},
             </if>
-
+            <if test="jurisdictionName !=null">
+                jurisdictionName = #{jurisdictionName,jdbcType=VARCHAR},
+            </if>
         </set>
         where empNo=#{empNo,jdbcType=VARCHAR}
     </update>
@@ -85,11 +110,11 @@
     </delete>
 
     <select id="findEmp" resultType="EmpEntity">
-        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo from emp where empNo=#{empNo,jdbcType=VARCHAR} and empPassword=#{empPassword,jdbcType=VARCHAR}
+        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo,jurisdictionName from emp where empNo=#{empNo,jdbcType=VARCHAR} and empPassword=#{empPassword,jdbcType=VARCHAR}
     </select>
 
     <select id="findEmpByEmpNo" resultType="EmpEntity">
-        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo from emp where empNo=#{empNo,jdbcType=VARCHAR}
+        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo,jurisdictionName from emp where empNo=#{empNo,jdbcType=VARCHAR}
     </select>
 
 
@@ -140,15 +165,12 @@
 
 
     <select id="selectEmpByleaderName" parameterType="String" resultType="EmpEntity">
-        select distinct a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.loginIP,b.teamNo,b.teamName,b.leaderName from emp a inner join team b  on a.teamNo=b.teamNo
+        select distinct a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.loginIP,a.teamNo,a.jurisdictionName from emp a
         where 1=1
-        <!--<if test="leaderName != null and leaderName.trim() != ''">
-            and b.leaderName=#{leaderName,jdbcType=VARCHAR}
+        <if test="jurisdictionName !=null">
+         and   jurisdictionName = #{jurisdictionName}
         </if>
-        <if test="empNo != null and empNo.trim() != ''">
-            and a.empNo=#{empNo,jdbcType=VARCHAR}
-        </if>-->
-        and b.teamNo > 0
+        and a.teamNo > 0
         order by a.createTime desc
     </select>
 </mapper>

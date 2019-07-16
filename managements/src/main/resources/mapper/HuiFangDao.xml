@@ -86,7 +86,7 @@
 
   <select id="getAllHuiFang" resultType="HuiFang">
     select a.empNo,b.empName,a.alreadyCooperate,a.noCooperate,a.huiFangNumber,a.huiFangTime,alreadyCooperateNumber,noCooperateNumber,allCustomerNumber
-     from huifang a
+    from huifang a
     left join emp b on a.empNo=b.empNo
     where 1=1
     <if test="empNo !=null and empNo.trim() != ''">

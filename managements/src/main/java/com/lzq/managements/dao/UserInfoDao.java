@@ -21,6 +21,35 @@ public interface UserInfoDao {
                                              @Param("offset") Integer offset,
                                              @Param("limit") Integer limit);
 
+    int getAllUserInfoCount(@Param("empNo")String empNo);
+    int updateTimerToNow(@Param("articleNo")String articleNo);
+    String selectArticleNo();
+    int getAllDiscardCount();
+
+    int getAllUserInfoByloginTimeCount(String empNo,String Time);
+    int checkUserinfoCount(@Param("empNo") String empNo,
+                           @Param("userNo") String userNo,
+                           @Param("FirstCreateTime") String FirstCreateTime,
+                           @Param("LastCreateTime") String LastCreateTime,
+                           @Param("status") Integer status,
+                           @Param("qqAccount") String qqAccount,
+                           @Param("state") String state);
+
+    int checkDiscardCount(@Param("empNo") String empNo,
+                          @Param("userNo") String userNo,
+                          @Param("FirstCreateTime") String FirstCreateTime,
+                          @Param("LastCreateTime") String LastCreateTime,
+                          @Param("status") Integer status,
+                          @Param("qqAccount") String qqAccount,
+                          @Param("state") String state);
+
+    int checkUserinfoByLoginTimeCount(@Param("empNo") String empNo,
+                                      @Param("userNo") String userNo,
+                                      @Param("Time") String Time,
+                                      @Param("status") Integer status,
+                                      @Param("qqAccount") String qqAccount,
+                                      @Param("state") String state);
+
     int insertUserinfo(UserInfo userInfo);
 
     int updateUserinfo(UserInfo userInfo);
@@ -64,4 +93,5 @@ public interface UserInfoDao {
     List<UserInfo> getUpdateTime();
 
     int getLocking(String userNo);
+
 }

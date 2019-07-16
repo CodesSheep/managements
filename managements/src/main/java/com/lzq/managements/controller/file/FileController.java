@@ -23,7 +23,7 @@ public class FileController {
         JSONObject json =new JSONObject();
         try{
             List<FileEntity> list =fileService.getAllFile(empNo,offset,limit);
-            int total=fileService.getAllFile(empNo,null,null).size();
+            int total=fileService.checkCount(empNo,null,null,null, null, null);
             json.put("rows",list);
             json.put("total",total);
             return JSON.toJSONStringWithDateFormat(json,"yy-MM-dd HH:mm:ss");
@@ -40,13 +40,8 @@ public class FileController {
     public String checkUserinfo(String empNo, String userNo,String fileName,String FirstCreateTime, String LastCreateTime, String fileState, Integer offset, Integer limit){
         JSONObject json=new JSONObject();
         try{
-/*
-                if (FirstCreateTime == null || FirstCreateTime.trim() == "") {
-                    FirstCreateTime = "2018-8-30 00:00:00";
-
-                }*/
             List<FileEntity> list=fileService.checkFile(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState, offset, limit);
-            int total=fileService.checkFile(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState, null, null).size();
+            int total=fileService.checkCount(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState);
 
             json.put("rows",list);
             json.put("total",total);

@@ -67,10 +67,10 @@
 
         <!-- 指定数据库表 -->
 
-         <table tableName="huifang" domainObjectName="HuiFang"
+         <table tableName="phoneinfo" domainObjectName="PhoneInfo"
                 enableCountByExample="false" enableUpdateByExample="false"
                 enableDeleteByExample="false" enableSelectByExample="false"
-                selectByExampleQueryId="false" mapperName="HuiFangDao" >
+                selectByExampleQueryId="false" mapperName="PhoneInfoDao" >
              <property name="useActualColumnNames" value="true"/>
          </table>
          <!--<table tableName="mblog_peice_classification" domainObjectName="MblogPeiceClassification"

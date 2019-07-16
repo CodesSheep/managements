@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.managements.dao.PhoneInfoDao">
+  <select id="checkPhoneInfo"  resultType="PhoneInfo">
+    select p.serial,p.phoneNo,p.qqAccount,p.createTime,p.state,po.contacts,po.companyName,po.empNo,po.discard,po.remark,po.updateTime,po.hZstate,po.yXstate,e.empName
+    from phone p
+    LEFT JOIN phoneinfo po on p.phoneNo=po.phoneNo
+    LEFT JOIN emp e on po.empNo=e.empNo
+    where 1=1
+    <if test="empNo == 'admin' or empNo == 'luoxiao' or empNo == 'zhulei'" >
+      and (po.discard is null or po.discard=0)
+    </if>
+    <if test="empNo != null and empNo !='admin' and empNo !='luoxiao' and empNo !='zhulei' and empNo.trim() != ''" >
+      and e.empNo=#{empNo,jdbcType=VARCHAR} and  po.discard=0
+    </if>
+    <if test="phoneNo != null and phoneNo.trim() != ''" >
+      and p.phoneNo=#{phoneNo,jdbcType=VARCHAR}
+    </if>
+    <if test="qqAccount != null and qqAccount.trim() != ''" >
+      and p.qqAccount=#{qqAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="FirstTime != null and FirstTime.trim() != ''  and LastTime != null and LastTime.trim() != ''">
+      and p.createTime between #{FirstTime} and #{LastTime}
+    </if>
+    <if test="FirstTime != null and FirstTime.trim() != '' and (LastTime == null or LastTime.trim() == '')">
+      and p.createTime between #{FirstTime} and now()
+    </if>
+    <if test="state != null and state.trim() != ''" >
+      and p.state=#{state,jdbcType=VARCHAR}
+    </if>
+    <if test="hZstate != null and hZstate.trim() != ''" >
+      and po.hZstate=#{hZstate,jdbcType=VARCHAR}
+    </if>
+    <if test="yXstate != null and yXstate.trim() != ''" >
+      and po.yXstate=#{yXstate,jdbcType=VARCHAR}
+    </if>
+
+    order by p.createTime desc
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+
+  <select id="getCount" resultType="Integer">
+    select count(*)
+    from phone p
+    LEFT JOIN phoneinfo po on p.phoneNo=po.phoneNo
+    LEFT JOIN emp e on po.empNo=e.empNo
+    where 1=1
+    <if test="empNo == 'admin' or empNo == 'luoxiao' or empNo == 'zhulei'" >
+      and (po.discard is null or po.discard=0)
+    </if>
+    <if test="empNo != null and empNo !='admin' and empNo !='luoxiao' and empNo !='zhulei' and empNo.trim() != ''" >
+      and e.empNo=#{empNo,jdbcType=VARCHAR} and  po.discard=0
+    </if>
+    <if test="phoneNo != null and phoneNo.trim() != ''" >
+      and p.phoneNo=#{phoneNo,jdbcType=VARCHAR}
+    </if>
+    <if test="qqAccount != null and qqAccount.trim() != ''" >
+      and p.qqAccount=#{qqAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="FirstTime != null and FirstTime.trim() != ''  and LastTime != null and LastTime.trim() != ''">
+      and p.createTime between #{FirstTime} and #{LastTime}
+    </if>
+    <if test="FirstTime != null and FirstTime.trim() != '' and (LastTime == null or LastTime.trim() == '')">
+      and p.createTime between #{FirstTime} and now()
+    </if>
+    <if test="hZstate != null and hZstate.trim() != ''" >
+      and po.hZstate=#{hZstate,jdbcType=VARCHAR}
+    </if>
+    <if test="yXstate != null and yXstate.trim() != ''" >
+      and po.yXstate=#{yXstate,jdbcType=VARCHAR}
+    </if>
+    <if test="state != null and state.trim() != ''" >
+      and p.state=#{state,jdbcType=VARCHAR}
+    </if>
+    order by p.createTime desc
+  </select>
+
+  <insert id="insertPhoneInfo" parameterType="com.lzq.managements.entity.PhoneInfo">
+    insert into phoneinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        serial,
+      </if>
+      <if test="phoneNo != null">
+        phoneNo,
+      </if>
+      <if test="empNo != null">
+        empNo,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="updateTime != null">
+        updateTime,
+      </if>
+      <if test="discard != null">
+        discard,
+      </if>
+      <if test="hZstate != null">
+        hZstate,
+      </if>
+      <if test="yXstate != null">
+        yXstate,
+      </if>
+      <if test="contacts != null">
+        contacts,
+      </if>
+      <if test="companyName != null">
+        companyName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="serial != null">
+        #{serial,jdbcType=BIGINT},
+      </if>
+      <if test="phoneNo != null">
+        #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="empNo != null">
+        #{empNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discard != null">
+        #{discard,jdbcType=VARCHAR},
+      </if>
+      <if test="hZstate != null">
+        #{hZstate,jdbcType=VARCHAR},
+      </if>
+      <if test="yXstate != null">
+        #{yXstate,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null">
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updatePhoneInfo" parameterType="com.lzq.managements.entity.PhoneInfo">
+    update phoneinfo
+    <set>
+      <if test="empNo != null and empNo.trim() != ''">
+        empNo = #{empNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        updateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discard != null">
+        discard = #{discard,jdbcType=VARCHAR},
+      </if>
+      <if test="hZstate != null">
+        hZstate = #{hZstate,jdbcType=VARCHAR},
+      </if>
+      <if test="yXstate != null">
+        yXstate = #{yXstate,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null">
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        companyName = #{companyName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where phoneNo = #{phoneNo,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getPhoneInfo" parameterType="String" resultType="PhoneInfo">
+    select phoneNo,empNo,discard,remark,updateTime,hZstate,yXstate from phoneinfo where phoneNo=#{phoneNo,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updatePhone" parameterType="com.lzq.managements.entity.PhoneInfo">
+    update phone
+    <set>
+      <if test="qqAccount != null">
+        qqAccount = #{qqAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null">
+        phoneNo = #{phoneNo,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where phoneNo = #{phoneNo,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

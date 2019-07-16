@@ -19,4 +19,11 @@ public interface FileService {
                                String fileState,
                                Integer offset,
                                Integer limit);
+
+    int checkCount(String empNo,
+                   String userNo,
+                   String fileName,
+                   String FirstCreateTime,
+                   String LastCreateTime,
+                   String fileState);
 }

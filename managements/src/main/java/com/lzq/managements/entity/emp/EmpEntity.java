@@ -20,5 +20,6 @@ public class EmpEntity implements Serializable {
     private Date   loginTime;
     private String loginIP;
     private String teamNo;
-    private String leaderName;
+    private String jurisdictionName;
+
 }

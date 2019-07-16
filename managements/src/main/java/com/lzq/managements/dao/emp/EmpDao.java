@@ -11,6 +11,7 @@ import java.util.List;
 public interface EmpDao {
     List<EmpEntity> getAllEmp(@Param("empNo")String empNo,@Param("offset") Integer offset,
                               @Param("limit") Integer limit);
+    int getCount(@Param("empNo")String empNo);
     int insertEmp(EmpEntity empEntity);
     int updateEmp(EmpEntity empEntity);
     int deleteEmp(List<String> list);
@@ -18,6 +19,6 @@ public interface EmpDao {
     EmpEntity findEmpByEmpNo(@Param("empNo")String empNo);
     int insertTeam(Team team);
     int updateTeam(Team team);
-    List<EmpEntity> selectEmpByleaderName(@Param("leaderName")String leaderName,@Param("empNo")String empNo);
+    List<EmpEntity> selectEmpByleaderName(@Param("jurisdictionName")String jurisdictionName);
     String selectEmpByempName(String empName);
 }

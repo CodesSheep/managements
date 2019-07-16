@@ -12,10 +12,10 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="empNo == 'admin'" >
+        <if test="empNo == 'admin' or empNo == 'luoxiao' or empNo == 'zhulei'" >
             and a.discard is null or a.discard=0
         </if>
-        <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
+        <if test="empNo != null and empNo !='admin' and empNo !='luoxiao' and empNo !='zhulei' and empNo.trim() != ''" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         order by b.createTime desc
@@ -23,6 +23,22 @@
             limit #{offset},#{limit}
         </if>
     </select>
+
+
+    <select id="getAllUserInfoCount" resultType="Integer">
+        select  count(*)
+        from user b  left JOIN  userinfo a ON a.userNo = b.userNo
+        left join emp c ON a.empNo = c.empNo
+        where 1=1
+        <if test="empNo == 'admin' or empNo == 'luoxiao' or empNo == 'zhulei'" >
+            and a.discard is null or a.discard=0
+        </if>
+        <if test="empNo != null and empNo !='admin' and empNo !='luoxiao' and empNo !='zhulei' and empNo.trim() != ''" >
+            and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        </if>
+        order by b.createTime desc
+    </select>
+
 
     <select id="getAllDiscard" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
@@ -37,6 +53,29 @@
         </if>
     </select>
 
+    <update id="updateTimerToNow" parameterType="String" >
+        update articlenavigation
+        <set>
+            <if test="articleNo !=null">
+                articleNo=#{articleNo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where serial=${1}
+    </update>
+
+    <select id="selectArticleNo"  resultType="java.lang.String">
+        select articleNo from  articlenavigation where serial=${1}
+    </select>
+
+    <select id="getAllDiscardCount" resultType="Integer">
+        select count(*)
+        from user b  left JOIN  userinfo a ON a.userNo = b.userNo
+        left join emp c ON a.empNo = c.empNo
+        where 1=1
+        and a.discard=1
+        order by a.adjustTime desc
+    </select>
+
 
     <select id="getAllUserInfoByloginTime" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
@@ -44,8 +83,7 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-
-        <if test="empNo != null and empNo !='admin' and empNo.trim() != ''">
+        <if test="empNo != null and empNo !='admin' and empNo !='luoxiao' and empNo.trim() != ''">
             and c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         <if test="Time !=null and Time.trim() !=''">
@@ -55,6 +93,22 @@
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>
+    </select>
+
+    <select id="getAllUserInfoByloginTimeCount" resultType="Integer">
+        select count(*)
+        from user b  left JOIN  userinfo a ON a.userNo = b.userNo
+        left join emp c ON a.empNo = c.empNo
+        where 1=1
+
+        <if test="empNo != null and empNo !='admin'  and empNo !='luoxiao' and empNo.trim() != ''">
+            and c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        </if>
+        <if test="Time !=null and Time.trim() !=''">
+            and b.loginTime between #{Time} and now()
+        </if>
+        order by b.loginTime desc
+
     </select>
 
     <select id="getOneByUserNo" parameterType="String" resultType="UserInfo">
@@ -236,8 +290,8 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="empNo == 'admin'  " >
-            and a.discard is null or a.discard=0
+        <if test="empNo == 'admin' or  empNo == 'luoxiao' or empNo == 'zhulei'" >
+            and (a.discard is null or a.discard=0)
         </if>
         <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
@@ -264,6 +318,39 @@
         <if test="offset !=null and limit !=null">
             limit #{offset},#{limit}
         </if>
+    </select>
+
+    <select id="checkUserinfoCount" resultType="Integer">
+        select count(*)
+        from user b  left JOIN  userinfo a ON a.userNo = b.userNo
+        left join emp c ON a.empNo = c.empNo
+        where 1=1
+        <if test="empNo == 'admin' or  empNo == 'luoxiao' or empNo == 'zhulei'" >
+            and a.discard is null or a.discard=0
+        </if>
+        <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
+            and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        </if>
+        <if test="userNo != null and userNo.trim() != ''">
+            and b.userNo like concat('%',#{userNo},'%')
+        </if>
+        <if test="FirstCreateTime != null  and LastCreateTime != null and LastCreateTime.trim() != ''">
+            and a.updateTime between #{FirstCreateTime} and #{LastCreateTime}
+        </if>
+        <if test="FirstCreateTime != null and FirstCreateTime.trim() != '' and (LastCreateTime == null or LastCreateTime.trim() == '')">
+            and a.updateTime between #{FirstCreateTime} and now()
+        </if>
+        <if test="status !=null ">
+            and b.status=#{status}
+        </if>
+        <if test="qqAccount !=null and qqAccount.trim() !='' ">
+            and b.qqAccount=#{qqAccount}
+        </if>
+        <if test="state !=null and state.trim() !=''">
+            and a.state=#{state}
+        </if>
+        order by b.createTime desc
+
     </select>
 
 
@@ -302,6 +389,35 @@
         </if>
     </select>
 
+    <select id="checkDiscardCount" resultType="Integer">
+        select count(*)
+        from user b  left JOIN  userinfo a ON a.userNo = b.userNo
+        left join emp c ON a.empNo = c.empNo
+        where 1=1
+        and a.discard=1
+        <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
+            and  c.empNo=#{empNo,jdbcType=VARCHAR}
+        </if>
+        <if test="userNo != null and userNo.trim() != ''">
+            and b.userNo like concat('%',#{userNo},'%')
+        </if>
+        <if test="FirstCreateTime != null  and LastCreateTime != null and LastCreateTime.trim() != ''">
+            and a.updateTime between #{FirstCreateTime} and #{LastCreateTime}
+        </if>
+        <if test="FirstCreateTime != null and FirstCreateTime.trim() != '' and (LastCreateTime == null or LastCreateTime.trim() == '')">
+            and a.updateTime between #{FirstCreateTime} and now()
+        </if>
+        <if test="status !=null">
+            and b.status=#{status}
+        </if>
+        <if test="qqAccount !=null and qqAccount.trim() !='' ">
+            and b.qqAccount=#{qqAccount}
+        </if>
+        <if test="state !=null and state.trim() !=''">
+            and a.state=#{state}
+        </if>
+        order by a.adjustTime desc
+    </select>
 
     <select id="checkUserinfoByLoginTime" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
@@ -332,6 +448,33 @@
         <if test="offset !=null and limit !=null">
             limit #{offset},#{limit}
         </if>
+    </select>
+
+    <select id="checkUserinfoByLoginTimeCount" resultType="Integer">
+        select count(*)
+        from user b  left JOIN  userinfo a ON a.userNo = b.userNo
+        left join emp c ON a.empNo = c.empNo
+        where 1=1
+
+        <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
+            and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        </if>
+        <if test="userNo != null and userNo.trim() != ''">
+            and b.userNo like concat('%',#{userNo},'%')
+        </if>
+        <if test="Time !=null and Time.trim() !=''">
+            and b.loginTime between #{Time} and now()
+        </if>
+        <if test="status !=null ">
+            and b.status=#{status}
+        </if>
+        <if test="qqAccount !=null and qqAccount.trim() !='' ">
+            and b.qqAccount=#{qqAccount}
+        </if>
+        <if test="state !=null and state.trim() !=''">
+            and a.state=#{state}
+        </if>
+        order by b.logintime desc
     </select>
 
     <select id="getUpdateTime" resultType="UserInfo">
