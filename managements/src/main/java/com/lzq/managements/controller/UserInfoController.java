@@ -44,11 +44,11 @@ public class UserInfoController {
 
     @RequestMapping("getAllUserInfo")
     @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
-    public String getAllUserInfo(String empNo,Integer offset,Integer limit){
+    public String getAllUserInfo(String empNo,String jurisdictionName,String teamNo,Integer offset,Integer limit){
         JSONObject json=new JSONObject();
         try {
-            List<UserInfo> list = userInfoService.getAllUserInfo( empNo,offset, limit);
-            int total = userInfoService.getAllUserInfoCount(empNo);
+            List<UserInfo> list = userInfoService.getAllUserInfo( empNo,jurisdictionName,teamNo,offset, limit);
+            int total = userInfoService.getAllUserInfoCount(empNo,jurisdictionName,teamNo);
             json.put("rows", list);
             json.put("total", total);
             return JSON.toJSONStringWithDateFormat(json, "yyyy-MM-dd HH:mm:ss", SerializerFeature.WriteMapNullValue);
@@ -57,9 +57,16 @@ public class UserInfoController {
             return JSON.toJSONString(json);
         }
     }
+
+    /**
+     * 客户详细页面中的客户信息以及下拉框中的员工信息
+     * @param userNo
+     * @param teamNo
+     * @return
+     */
     @RequestMapping("getOneByUserNo")
     @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
-    public String getOneByUserNo(String userNo,String jurisdictionName){
+    public String getOneByUserNo(String userNo,String teamNo){
         JSONObject json=new JSONObject();
         try{
             List<UserInfo> ars=userInfoService.getOne(userNo);
@@ -69,7 +76,7 @@ public class UserInfoController {
                 userInfo.setLocking("0");
                 userInfoService.insertUserinfo(userInfo);
             }
-            List<EmpEntity> ar= empService.selectEmpByleaderName(jurisdictionName);
+            List<EmpEntity> ar= empService.selectEmpByteamNo(teamNo);
             List<Feedback> list=feedbackService.getAllFeedbackByUserNo(userNo);
             json.put("ar",ar);
             json.put("list",list);
@@ -97,6 +104,11 @@ public class UserInfoController {
         }
     }
 
+    /**
+     * 客户详细信息页面中修改信息
+     * @param userInfo
+     * @return
+     */
     @RequestMapping("updateUserInfo")
     @CacheEvict(value = "userinfo", allEntries = true)
     public String updateUserInfo(UserInfo userInfo){
@@ -163,15 +175,15 @@ public class UserInfoController {
 
     @RequestMapping("checkUserinfo")
     @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
-    public String checkUserinfo(String empNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit){
+    public String checkUserinfo(String empNo,String jurisdictionName,String teamNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit){
             JSONObject json=new JSONObject();
             try{
                 if (FirstCreateTime == null || FirstCreateTime.trim() == "") {
                     FirstCreateTime = "2018-8-30 00:00:00";
 
                 }
-                List<UserInfo> list=userInfoService.checkUserinfo(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
-                int total=userInfoService.checkUserinfoCount(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state);
+                List<UserInfo> list=userInfoService.checkUserinfo(empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
+                int total=userInfoService.checkUserinfoCount(empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state);
 
                 json.put("rows",list);
                 json.put("total",total);
@@ -220,7 +232,9 @@ public class UserInfoController {
             return JSON.toJSONString(json);
         }
     }
-
+   /**
+   *搜索栏选择调库
+   */
     @RequestMapping("userInfoDistribution")
     @CacheEvict(value = "userinfo", allEntries = true)
     public String userInfoDistribution(String[] userNo,String empNo,String discard){
@@ -428,7 +442,14 @@ public class UserInfoController {
         }
     }
 
-
+ /**
+  *create by: lzq
+  * description: 修改客户信息后增加一次回访记录
+  * create time: 2019-07-16 11:03
+  *
+   * @Param: null
+  * @return
+  */
     private void insert(String empNo,String userNo){
         String FirstCreateTime=new SimpleDateFormat("yyyy-MM-dd 00:00:00").format(new Date());
         List<HuiFang> ar=huiFangService.getAllHuiFang(empNo,FirstCreateTime,null,null,null);

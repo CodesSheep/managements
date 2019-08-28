@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface UserInfoDao {
     List<UserInfo> getAllUserInfo(@Param("empNo") String empNo,
+                                  @Param("jurisdictionName") String jurisdictionName,
+                                  @Param("teamNo") String teamNo,
                                   @Param("offset") Integer offset,
                                   @Param("limit") Integer limit);
 
@@ -21,13 +23,17 @@ public interface UserInfoDao {
                                              @Param("offset") Integer offset,
                                              @Param("limit") Integer limit);
 
-    int getAllUserInfoCount(@Param("empNo")String empNo);
+    int getAllUserInfoCount(@Param("empNo") String empNo,
+                            @Param("jurisdictionName") String jurisdictionName,
+                            @Param("teamNo") String teamNo);
     int updateTimerToNow(@Param("articleNo")String articleNo);
     String selectArticleNo();
     int getAllDiscardCount();
 
     int getAllUserInfoByloginTimeCount(String empNo,String Time);
     int checkUserinfoCount(@Param("empNo") String empNo,
+                           @Param("jurisdictionName") String jurisdictionName,
+                           @Param("teamNo") String teamNo,
                            @Param("userNo") String userNo,
                            @Param("FirstCreateTime") String FirstCreateTime,
                            @Param("LastCreateTime") String LastCreateTime,
@@ -63,6 +69,8 @@ public interface UserInfoDao {
     List<UserInfo> getOne(String userNo);
 
     List<UserInfo> checkUserinfo(@Param("empNo") String empNo,
+                                 @Param("jurisdictionName") String jurisdictionName,
+                                 @Param("teamNo") String teamNo,
                                  @Param("userNo") String userNo,
                                  @Param("FirstCreateTime") String FirstCreateTime,
                                  @Param("LastCreateTime") String LastCreateTime,

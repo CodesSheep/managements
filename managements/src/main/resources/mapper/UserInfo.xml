@@ -6,14 +6,14 @@
         select * from userinfo where userNo=#{userNo,jdbcType=VARCHAR}
     </select>
 
-    <select id="getAllUserInfo" resultType="UserInfo">
+   <!-- <select id="getAllUserInfo" resultType="UserInfo">
         select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
         b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.adjustTime,a.planTime,a.feedback,a.remark,a.discard,a.empNo,c.empName,a.locking
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
         <if test="empNo == 'admin' or empNo == 'luoxiao' or empNo == 'zhulei'" >
-            and a.discard is null or a.discard=0
+            and (a.discard is null or a.discard=0)
         </if>
         <if test="empNo != null and empNo !='admin' and empNo !='luoxiao' and empNo !='zhulei' and empNo.trim() != ''" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
@@ -22,22 +22,58 @@
         <if test="offset != null and limit != null">
             limit #{offset},#{limit}
         </if>
+    </select>-->
+    <select id="getAllUserInfo" resultType="UserInfo">
+        select b.serial,b.userNo,b.vipLevel,b.vipLevelZN,b.balance,a.accumulative,a.operation,b.qqAccount,b.phoneNo,b.createTime,a.state,
+        b.loginTime,a.contacts,a.companyName,b.status,a.updateTime,a.adjustTime,a.planTime,a.feedback,a.remark,a.discard,a.empNo,c.empName,a.locking
+        from user b  left JOIN  userinfo a ON a.userNo = b.userNo
+        left join emp c ON a.empNo = c.empNo
+        where 1=1
+        <if test="teamNo != null and jurisdictionName != null and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
+            and (a.discard is null or a.discard=0)
+            <if test="teamNo != null  and teamNo !=0 and teamNo.trim()!=''">
+                and c.teamNo=#{teamNo}
+            </if>
+        </if>
+        <if test="empNo != null and empNo.trim() != '' and jurisdictionName!='admin'" >
+            and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        </if>
+        order by b.createTime desc
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
     </select>
 
-
-    <select id="getAllUserInfoCount" resultType="Integer">
+    <!--<select id="getAllUserInfoCount" resultType="Integer">
         select  count(*)
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
         <if test="empNo == 'admin' or empNo == 'luoxiao' or empNo == 'zhulei'" >
-            and a.discard is null or a.discard=0
+            and (a.discard is null or a.discard=0)
         </if>
         <if test="empNo != null and empNo !='admin' and empNo !='luoxiao' and empNo !='zhulei' and empNo.trim() != ''" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         order by b.createTime desc
+    </select>-->
+    <select id="getAllUserInfoCount" resultType="Integer">
+        select  count(*)
+        from user b  left JOIN  userinfo a ON a.userNo = b.userNo
+        left join emp c ON a.empNo = c.empNo
+        where 1=1
+        <if test="teamNo != null and jurisdictionName != null and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
+            and (a.discard is null or a.discard=0)
+            <if test="teamNo != null and teamNo !='0' and teamNo.trim()!=''">
+                and c.teamNo=#{teamNo}
+            </if>
+        </if>
+        <if test="empNo != null and empNo.trim() != '' and jurisdictionName!='admin'" >
+            and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        </if>
+        order by b.createTime desc
     </select>
+
 
 
     <select id="getAllDiscard" resultType="UserInfo">
@@ -83,8 +119,8 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="empNo != null and empNo !='admin' and empNo !='luoxiao' and empNo.trim() != ''">
-            and c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        <if test="empNo != null and empNo.trim() != '' and jurisdictionName!='admin'" >
+            and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         <if test="Time !=null and Time.trim() !=''">
             and b.loginTime between #{Time} and now()
@@ -101,8 +137,8 @@
         left join emp c ON a.empNo = c.empNo
         where 1=1
 
-        <if test="empNo != null and empNo !='admin'  and empNo !='luoxiao' and empNo.trim() != ''">
-            and c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
+        <if test="empNo != null and empNo.trim() != '' and jurisdictionName!='admin'" >
+            and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         <if test="Time !=null and Time.trim() !=''">
             and b.loginTime between #{Time} and now()
@@ -290,8 +326,11 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="empNo == 'admin' or  empNo == 'luoxiao' or empNo == 'zhulei'" >
+        <if test="(empNo == null or empNo.trim() == '')  and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
             and (a.discard is null or a.discard=0)
+            <if test="teamNo != null and and teamNo !='0' teamNo.trim()!=''">
+                and c.teamNo=#{teamNo}
+            </if>
         </if>
         <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
@@ -325,8 +364,11 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="empNo == 'admin' or  empNo == 'luoxiao' or empNo == 'zhulei'" >
-            and a.discard is null or a.discard=0
+        <if test="(empNo == null or empNo.trim() == '')  and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
+            and (a.discard is null or a.discard=0)
+            <if test="teamNo != null and teamNo.trim()!=''">
+                and c.teamNo=#{teamNo}
+            </if>
         </if>
         <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0

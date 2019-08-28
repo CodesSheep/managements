@@ -154,7 +154,7 @@ public class PhoneInfoController {
 
     @RequestMapping("getOneByphoneNo")
     @Cacheable(value = "phoneinfo",keyGenerator = "keyGenerator")
-    public String getOneByphoneNo(String phoneNo,String jurisdictionName){
+    public String getOneByphoneNo(String phoneNo,String teamNo){
        JSONObject json = new JSONObject();
         try {
             List<PhoneInfo> arrs=phoneInfoService.getPhoneInfo(phoneNo);
@@ -163,7 +163,7 @@ public class PhoneInfoController {
                 p.setPhoneNo(phoneNo);
                 phoneInfoService.insertPhoneInfo(p);
             }
-            List<EmpEntity> ar= empService.selectEmpByleaderName(jurisdictionName);
+            List<EmpEntity> ar= empService.selectEmpByteamNo(teamNo);
             json.put("ar",ar);
             return JSON.toJSONString(json);
         } catch (Exception e) {

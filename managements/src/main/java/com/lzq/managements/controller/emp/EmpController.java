@@ -5,12 +5,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.lzq.managements.entity.Team;
 import com.lzq.managements.entity.emp.EmpEntity;
 import com.lzq.managements.service.emp.EmpService;
+import com.lzq.managements.util.FilesUtils;
 import com.lzq.managements.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,6 +26,8 @@ import java.util.List;
 public class EmpController {
     @Autowired
     private EmpService empService;
+    @Value("${spring.base.filePath}")
+    private String uploadLocation;
 
     @RequestMapping("getAllEmp")
     @Cacheable(value = "emp",keyGenerator = "keyGenerator")
@@ -40,9 +46,15 @@ public class EmpController {
     }
     @RequestMapping("updateEmp")
     @CacheEvict(value = "emp",allEntries = true)
-    public String updateEmp(EmpEntity empEntity){
+    public String updateEmp(@RequestParam("file")MultipartFile file,EmpEntity empEntity){
         JSONObject json=new JSONObject();
         try{
+            if(file !=null) {
+                List<String> ar = FilesUtils.fileUploadSimple(file, empEntity.getEmpNo(), uploadLocation);
+                for (String imgURL : ar) {
+                    empEntity.setImgURL(imgURL);
+                }
+            }
             empService.updateEmp(empEntity);
             json.put("result",true);
             json.put("message","修改成功！");
@@ -58,7 +70,7 @@ public class EmpController {
 
     @RequestMapping("insertEmp")
     @CacheEvict(value = "emp",allEntries = true)
-    public String insertEmp(EmpEntity empEntity){
+    public String insertEmp(@RequestParam("file") MultipartFile file, EmpEntity empEntity){
         JSONObject json=new JSONObject();
         try{
             EmpEntity e=empService.findEmpByEmpNo(empEntity.getEmpNo());
@@ -77,7 +89,12 @@ public class EmpController {
                 json.put("message","请输入密码");
                 return JSON.toJSONString(json);
             }
-
+            if(file !=null) {
+                List<String> ar = FilesUtils.fileUploadSimple(file, empEntity.getEmpNo(), uploadLocation);
+                for (String imgURL : ar) {
+                    empEntity.setImgURL(imgURL);
+                }
+            }
             empEntity.setTeamNo("3");
             empService.insertEmp(empEntity);
             json.put("result",true);
@@ -170,12 +187,13 @@ public class EmpController {
 
     @RequestMapping("selectEmpByleaderName")
     @Cacheable(value = "emp",keyGenerator = "keyGenerator")
-    public String selectEmpByleaderName(String jurisdictionName){
+    public String selectEmpByleaderName(String teamNo){
     JSONObject json = new JSONObject();
     try{
-        List<EmpEntity> ar= empService.selectEmpByleaderName(jurisdictionName);
+        List<EmpEntity> ar= empService.selectEmpByteamNo(teamNo);
         json.put("ar",ar);
-        return JSON.toJSONString(json);
+      return JSON.toJSONString(json);
+
     }catch (Exception e){
         e.printStackTrace();
         return JSON.toJSONString(json);

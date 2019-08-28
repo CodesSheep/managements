@@ -17,9 +17,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoDao userDao;
 
     @Override
-    public List<UserInfo> getAllUserInfo( String empNo,Integer offset, Integer limit) {
+    public List<UserInfo> getAllUserInfo( String empNo,String jurisdictionName,String teamNo,Integer offset, Integer limit) {
 
-        return userDao.getAllUserInfo(empNo,offset,limit);
+        return userDao.getAllUserInfo(empNo,jurisdictionName,teamNo,offset, limit);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfo> checkUserinfo(String empNo,String userNo, String FirstCreateTime, String LastCreateTime, Integer status,String qqAccount, String state, Integer offset, Integer limit) {
-        return userDao.checkUserinfo(empNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
+    public List<UserInfo> checkUserinfo(String empNo,String jurisdictionName,String teamNo,String userNo, String FirstCreateTime, String LastCreateTime, Integer status,String qqAccount, String state, Integer offset, Integer limit) {
+        return userDao.checkUserinfo(empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
     }
 
     @Override
@@ -89,8 +89,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public int getAllUserInfoCount(String empNo) {
-        return userDao.getAllUserInfoCount(empNo);
+    public int getAllUserInfoCount(String empNo,String jurisdictionName,String teamNo) {
+        return userDao.getAllUserInfoCount(empNo,jurisdictionName,teamNo);
     }
 
     @Override
@@ -104,8 +104,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public int checkUserinfoCount(String empNo, String userNo, String FirstCreateTime, String LastCreateTime, Integer status, String qqAccount, String state) {
-        return userDao.checkUserinfoCount(empNo, userNo, FirstCreateTime,LastCreateTime,status,qqAccount,state);
+    public int checkUserinfoCount(String empNo,String jurisdictionName,String teamNo, String userNo, String FirstCreateTime, String LastCreateTime, Integer status, String qqAccount, String state) {
+        return userDao.checkUserinfoCount(empNo,jurisdictionName,teamNo, userNo, FirstCreateTime,LastCreateTime,status,qqAccount,state);
     }
 
     @Override

@@ -19,6 +19,6 @@ public interface EmpDao {
     EmpEntity findEmpByEmpNo(@Param("empNo")String empNo);
     int insertTeam(Team team);
     int updateTeam(Team team);
-    List<EmpEntity> selectEmpByleaderName(@Param("jurisdictionName")String jurisdictionName);
+    List<EmpEntity> selectEmpByteamNo(@Param("teamNo")String teamNo);
     String selectEmpByempName(String empName);
 }

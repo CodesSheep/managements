@@ -21,5 +21,7 @@ public class EmpEntity implements Serializable {
     private String loginIP;
     private String teamNo;
     private String jurisdictionName;
-
+    private String qq;
+    private String phone;
+    private String imgURL;
 }

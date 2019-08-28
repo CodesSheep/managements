@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lzq.managements.dao.emp.EmpDao">
     <select id="getAllEmp" resultType="EmpEntity">
-        select a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.teamNo,a.jurisdictionName
+        select a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.teamNo,a.jurisdictionName,a.qq,a.phone,a.imgURL
         from emp a
         where 1=1
         <if test="empNo !=null">
@@ -51,6 +51,15 @@
             <if test="jurisdictionName !=null">
                 jurisdictionName,
             </if>
+            <if test="qq !=null">
+                qq,
+            </if>
+            <if test="phone !=null">
+                phone,
+            </if>
+            <if test="imgURL !=null">
+                imgURL,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="empNo !=null">
@@ -73,6 +82,15 @@
             </if>
             <if test="jurisdictionName !=null">
                 #{jurisdictionName,jdbcType=VARCHAR},
+            </if>
+            <if test="qq !=null">
+                #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="phone !=null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="imgURL !=null">
+                #{imgURL,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -98,6 +116,15 @@
             <if test="jurisdictionName !=null">
                 jurisdictionName = #{jurisdictionName,jdbcType=VARCHAR},
             </if>
+            <if test="qq !=null">
+                qq =  #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="phone !=null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="imgURL !=null">
+                imgURL = #{imgURL,jdbcType=VARCHAR},
+            </if>
         </set>
         where empNo=#{empNo,jdbcType=VARCHAR}
     </update>
@@ -110,11 +137,11 @@
     </delete>
 
     <select id="findEmp" resultType="EmpEntity">
-        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo,jurisdictionName from emp where empNo=#{empNo,jdbcType=VARCHAR} and empPassword=#{empPassword,jdbcType=VARCHAR}
+        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo,jurisdictionName,qq,phone,imgURL from emp where empNo=#{empNo,jdbcType=VARCHAR} and empPassword=#{empPassword,jdbcType=VARCHAR}
     </select>
 
     <select id="findEmpByEmpNo" resultType="EmpEntity">
-        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo,jurisdictionName from emp where empNo=#{empNo,jdbcType=VARCHAR}
+        select serial,empNo,empName,empPassword,createTime,loginTime,teamNo,jurisdictionName,qq,phone,imgURL from emp where empNo=#{empNo,jdbcType=VARCHAR}
     </select>
 
 
@@ -164,13 +191,12 @@
     </select>
 
 
-    <select id="selectEmpByleaderName" parameterType="String" resultType="EmpEntity">
+    <select id="selectEmpByteamNo" parameterType="String" resultType="EmpEntity">
         select distinct a.serial,a.empNo,a.empName,a.empPassword,a.createTime,a.loginTime,a.loginIP,a.teamNo,a.jurisdictionName from emp a
         where 1=1
-        <if test="jurisdictionName !=null">
-         and   jurisdictionName = #{jurisdictionName}
+        <if test="teamNo !=null and teamNo.trim() !=''">
+         and   a.teamNo = #{teamNo}
         </if>
-        and a.teamNo > 0
         order by a.createTime desc
     </select>
 </mapper>

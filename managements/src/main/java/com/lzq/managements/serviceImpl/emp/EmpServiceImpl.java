@@ -62,8 +62,8 @@ public class EmpServiceImpl implements EmpService {
     }
 
     @Override
-    public List<EmpEntity> selectEmpByleaderName(String jurisdictionName) {
-        return empDao.selectEmpByleaderName(jurisdictionName);
+    public List<EmpEntity> selectEmpByteamNo(String teamNo) {
+        return empDao.selectEmpByteamNo(teamNo);
     }
 
     @Override
