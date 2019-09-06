@@ -64,8 +64,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserInfo> checkUserinfo(String empNo,String jurisdictionName,String teamNo,String userNo, String FirstCreateTime, String LastCreateTime, Integer status,String qqAccount, String state, Integer offset, Integer limit) {
-        return userDao.checkUserinfo(empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
+    public List<UserInfo> checkUserinfo(String empName,String empNo,String jurisdictionName,String teamNo,String userNo, String FirstCreateTime, String LastCreateTime, Integer status,String qqAccount, String state, Integer offset, Integer limit) {
+        return userDao.checkUserinfo(empName,empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
     }
 
     @Override
@@ -104,8 +104,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public int checkUserinfoCount(String empNo,String jurisdictionName,String teamNo, String userNo, String FirstCreateTime, String LastCreateTime, Integer status, String qqAccount, String state) {
-        return userDao.checkUserinfoCount(empNo,jurisdictionName,teamNo, userNo, FirstCreateTime,LastCreateTime,status,qqAccount,state);
+    public int checkUserinfoCount(String empName,String empNo,String jurisdictionName,String teamNo, String userNo, String FirstCreateTime, String LastCreateTime, Integer status, String qqAccount, String state) {
+        return userDao.checkUserinfoCount(empName,empNo,jurisdictionName,teamNo, userNo, FirstCreateTime,LastCreateTime,status,qqAccount,state);
     }
 
     @Override

@@ -40,4 +40,5 @@ public class UserInfo implements Serializable {
     private String discard;
     private String locking;
     private Date adjustTime;
+    private String teamNo;
 }

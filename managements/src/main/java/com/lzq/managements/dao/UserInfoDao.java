@@ -31,7 +31,8 @@ public interface UserInfoDao {
     int getAllDiscardCount();
 
     int getAllUserInfoByloginTimeCount(String empNo,String Time);
-    int checkUserinfoCount(@Param("empNo") String empNo,
+    int checkUserinfoCount(@Param("empName") String empName,
+                           @Param("empNo") String empNo,
                            @Param("jurisdictionName") String jurisdictionName,
                            @Param("teamNo") String teamNo,
                            @Param("userNo") String userNo,
@@ -68,7 +69,9 @@ public interface UserInfoDao {
 
     List<UserInfo> getOne(String userNo);
 
-    List<UserInfo> checkUserinfo(@Param("empNo") String empNo,
+    List<UserInfo> checkUserinfo(
+                                 @Param("empName") String empName,
+                                 @Param("empNo") String empNo,
                                  @Param("jurisdictionName") String jurisdictionName,
                                  @Param("teamNo") String teamNo,
                                  @Param("userNo") String userNo,

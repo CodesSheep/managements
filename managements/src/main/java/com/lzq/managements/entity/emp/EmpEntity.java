@@ -24,4 +24,5 @@ public class EmpEntity implements Serializable {
     private String qq;
     private String phone;
     private String imgURL;
+
 }

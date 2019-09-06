@@ -175,15 +175,15 @@ public class UserInfoController {
 
     @RequestMapping("checkUserinfo")
     @Cacheable(value = "userinfo", keyGenerator = "keyGenerator")
-    public String checkUserinfo(String empNo,String jurisdictionName,String teamNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit){
+    public String checkUserinfo(String empName,String empNo,String jurisdictionName,String teamNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit){
             JSONObject json=new JSONObject();
             try{
                 if (FirstCreateTime == null || FirstCreateTime.trim() == "") {
                     FirstCreateTime = "2018-8-30 00:00:00";
 
                 }
-                List<UserInfo> list=userInfoService.checkUserinfo(empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
-                int total=userInfoService.checkUserinfoCount(empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state);
+                List<UserInfo> list=userInfoService.checkUserinfo(empName,empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state, offset, limit);
+                int total=userInfoService.checkUserinfoCount(empName,empNo,jurisdictionName,teamNo,userNo,FirstCreateTime, LastCreateTime, status,qqAccount, state);
 
                 json.put("rows",list);
                 json.put("total",total);

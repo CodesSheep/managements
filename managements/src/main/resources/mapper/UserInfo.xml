@@ -136,7 +136,6 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-
         <if test="empNo != null and empNo.trim() != '' and jurisdictionName!='admin'" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
@@ -144,7 +143,6 @@
             and b.loginTime between #{Time} and now()
         </if>
         order by b.loginTime desc
-
     </select>
 
     <select id="getOneByUserNo" parameterType="String" resultType="UserInfo">
@@ -326,13 +324,24 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="(empNo == null or empNo.trim() == '')  and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
+        /*//这个是组长*/
+        <if test="teamNo != null and jurisdictionName != null and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
             and (a.discard is null or a.discard=0)
-            <if test="teamNo != null and and teamNo !='0' teamNo.trim()!=''">
+            <if test="teamNo != null  and teamNo !='0' and teamNo.trim()!=''">
                 and c.teamNo=#{teamNo}
+
             </if>
         </if>
-        <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
+        /*//写管理员的*/
+        <if test="teamNo == null and jurisdictionName != null and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
+            and (a.discard is null or a.discard=0)
+            <if test="teamNo != null  and teamNo !='0' and teamNo.trim()!=''">
+                and c.teamNo=#{teamNo}
+
+            </if>
+        </if>
+
+        <if test="empNo != null and empNo !='admin' and empNo.trim() != '' and  jurisdictionName!='admin'" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         <if test="userNo != null and userNo.trim() != ''">
@@ -349,6 +358,9 @@
         </if>
         <if test="qqAccount !=null and qqAccount.trim() !='' ">
             and b.qqAccount=#{qqAccount}
+        </if>
+        <if test="empName !=null and empName.trim() !='' ">
+            and c.empName=#{empName}
         </if>
         <if test="state !=null and state.trim() !=''">
             and a.state=#{state}
@@ -364,13 +376,23 @@
         from user b  left JOIN  userinfo a ON a.userNo = b.userNo
         left join emp c ON a.empNo = c.empNo
         where 1=1
-        <if test="(empNo == null or empNo.trim() == '')  and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
+        <if test="teamNo != null and jurisdictionName != null and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
             and (a.discard is null or a.discard=0)
-            <if test="teamNo != null and teamNo.trim()!=''">
+            <if test="teamNo != null  and teamNo !='0' and teamNo.trim()!=''">
                 and c.teamNo=#{teamNo}
             </if>
         </if>
-        <if test="empNo != null and empNo !='admin' and empNo.trim() != ''" >
+
+        /*//写管理员的*/
+        <if test="teamNo == null and jurisdictionName != null and jurisdictionName=='admin' and jurisdictionName.trim() != ''" >
+            and (a.discard is null or a.discard=0)
+            <if test="teamNo != null  and teamNo !='0' and teamNo.trim()!=''">
+                and c.teamNo=#{teamNo}
+
+            </if>
+        </if>
+
+        <if test="empNo != null and empNo !='admin' and empNo.trim() != '' and  jurisdictionName!='admin'" >
             and  c.empNo=#{empNo,jdbcType=VARCHAR} and  a.discard=0
         </if>
         <if test="userNo != null and userNo.trim() != ''">
@@ -387,6 +409,9 @@
         </if>
         <if test="qqAccount !=null and qqAccount.trim() !='' ">
             and b.qqAccount=#{qqAccount}
+        </if>
+        <if test="empName !=null and empName.trim() !='' ">
+            and c.empName=#{empName}
         </if>
         <if test="state !=null and state.trim() !=''">
             and a.state=#{state}

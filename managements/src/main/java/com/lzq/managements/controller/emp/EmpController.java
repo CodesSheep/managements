@@ -26,7 +26,7 @@ import java.util.List;
 public class EmpController {
     @Autowired
     private EmpService empService;
-    @Value("${spring.base.filePath}")
+    @Value("${spring.base.empImgPath}")
     private String uploadLocation;
 
     @RequestMapping("getAllEmp")

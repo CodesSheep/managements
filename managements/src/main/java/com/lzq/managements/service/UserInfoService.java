@@ -16,7 +16,7 @@ public interface UserInfoService {
     int deleteUserinfo(String[] serial);
     UserInfo getOneByUserNo(String userNo);
     List<UserInfo> getOne(String userNo);
-    List<UserInfo> checkUserinfo(String empNo,String jurisdictionName,String teamNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit);
+    List<UserInfo> checkUserinfo(String empName,String empNo,String jurisdictionName,String teamNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit);
     List<UserInfo> checkDiscard(String empNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state,Integer offset,Integer limit);
     List<UserInfo> checkUserinfoByLoginTime(String empNo,String userNo,String Time,Integer status,String qqAccount,String state,Integer offset,Integer limit);
     List<UserInfo> getUpdateTime();
@@ -27,7 +27,7 @@ public interface UserInfoService {
     int getAllDiscardCount();
 
     int getAllUserInfoByloginTimeCount(String empNo,String Time);
-    int checkUserinfoCount(String empNo,String jurisdictionName,String teamNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state);
+    int checkUserinfoCount(String empName,String empNo,String jurisdictionName,String teamNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state);
 
     int checkDiscardCount(String empNo,String userNo,String FirstCreateTime,String LastCreateTime,Integer status,String qqAccount,String state);
 
