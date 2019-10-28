@@ -40,6 +40,12 @@
         <if test="fileState !=null and fileState.trim() !=''">
             and f.fileState=#{fileState,jdbcType=VARCHAR}
         </if>
+       <!-- <if test="link !=null and link.trim() !=''">
+            and f.link=#{link,jdbcType=VARCHAR}
+        </if>-->
+        <if test="filePath !=null and filePath.trim() !=''">
+            and f.filePath=#{filePath,jdbcType=VARCHAR}
+        </if>
         order by f.createTime desc
         <if test="offset !=null and limit !=null">
             limit #{offset},#{limit}
@@ -70,6 +76,12 @@
         <if test="fileState !=null and fileState.trim() !=''">
             and f.fileState=#{fileState,jdbcType=VARCHAR}
         </if>
+        <if test="filePath !=null and filePath.trim() !=''">
+            and f.filePath=#{filePath,jdbcType=VARCHAR}
+        </if>
+       <!-- <if test="link !=null and link.trim() !=''">
+            and f.link=#{link,jdbcType=VARCHAR}
+        </if>-->
         order by f.createTime desc
     </select>
 </mapper>

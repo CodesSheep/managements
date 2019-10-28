@@ -95,6 +95,7 @@
         </trim>
     </insert>
 
+
     <update id="updateEmp" parameterType="EmpEntity">
         update emp
         <set>

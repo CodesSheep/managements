@@ -23,7 +23,7 @@ public class FileController {
         JSONObject json =new JSONObject();
         try{
             List<FileEntity> list =fileService.getAllFile(empNo,offset,limit);
-            int total=fileService.checkCount(empNo,null,null,null, null, null);
+            int total=fileService.checkCount(empNo,null,null,null,null, null, null);
             json.put("rows",list);
             json.put("total",total);
             return JSON.toJSONStringWithDateFormat(json,"yy-MM-dd HH:mm:ss");
@@ -37,11 +37,11 @@ public class FileController {
 
     @RequestMapping("checkFile")
     @Cacheable(value = "file",keyGenerator = "keyGenerator")
-    public String checkUserinfo(String empNo, String userNo,String fileName,String FirstCreateTime, String LastCreateTime, String fileState, Integer offset, Integer limit){
+    public String checkUserinfo(String empNo, String userNo,String fileName,String FirstCreateTime, String LastCreateTime, String fileState, String filePath,Integer offset, Integer limit){
         JSONObject json=new JSONObject();
         try{
-            List<FileEntity> list=fileService.checkFile(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState, offset, limit);
-            int total=fileService.checkCount(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState);
+            List<FileEntity> list=fileService.checkFile(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState,filePath, offset, limit);
+            int total=fileService.checkCount(empNo,userNo,fileName,FirstCreateTime, LastCreateTime, fileState,filePath);
 
             json.put("rows",list);
             json.put("total",total);

@@ -17,6 +17,7 @@ public interface FileService {
                                String FirstCreateTime,
                                String LastCreateTime,
                                String fileState,
+                               String filePath,
                                Integer offset,
                                Integer limit);
 
@@ -25,5 +26,7 @@ public interface FileService {
                    String fileName,
                    String FirstCreateTime,
                    String LastCreateTime,
-                   String fileState);
+                   String fileState,
+                   String filePath
+    );
 }

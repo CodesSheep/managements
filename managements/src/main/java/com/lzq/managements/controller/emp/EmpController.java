@@ -123,6 +123,7 @@ public class EmpController {
                 json.put("message","请输入密码");
                 return JSON.toJSONString(json);
             }
+
             if (empService.findEmpByEmpNo(empNo) == null){
                 json.put("result",false);
                 json.put("message","该用户不存在");
